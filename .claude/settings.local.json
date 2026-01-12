@@ -30,7 +30,10 @@
       "Bash(cargo insta accept:*)",
       "Bash(git merge:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(cargo insta test:*)",
+      "Bash(find:*)",
+      "Bash(cargo install:*)"
     ]
   }
 }

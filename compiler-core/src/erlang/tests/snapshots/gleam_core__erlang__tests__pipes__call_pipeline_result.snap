@@ -28,6 +28,6 @@ add(X) ->
 -spec main() -> integer().
 main() ->
     begin
-    _pipe = 1,
-    add(_pipe)
-end(1).
+        _pipe = 1,
+        add(_pipe)
+    end(1).

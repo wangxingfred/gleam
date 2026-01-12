@@ -40,5 +40,5 @@ use_int_identity_alias() ->
 -spec use_compound() -> integer().
 use_compound() ->
     (erlang:element(2, {42, fun int_identity/1, fun int_identity/1}))(
-    erlang:element(1, {42, fun int_identity/1, fun int_identity/1})
-).
+        erlang:element(1, {42, fun int_identity/1, fun int_identity/1})
+    ).

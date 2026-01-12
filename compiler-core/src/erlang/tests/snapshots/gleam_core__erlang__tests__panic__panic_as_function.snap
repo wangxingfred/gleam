@@ -27,8 +27,8 @@ retstring() ->
 -spec main() -> any().
 main() ->
     erlang:error(#{gleam_error => panic,
-        message => (<<(retstring())/binary, "wobble"/utf8>>),
-        file => <<?FILEPATH/utf8>>,
-        module => <<"my/mod"/utf8>>,
-        function => <<"main"/utf8>>,
-        line => 6}).
+            message => (<<(retstring())/binary, "wobble"/utf8>>),
+            file => <<?FILEPATH/utf8>>,
+            module => <<"my/mod"/utf8>>,
+            function => <<"main"/utf8>>,
+            line => 6}).

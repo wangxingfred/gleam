@@ -30,10 +30,10 @@ double(X) ->
 -spec main(integer()) -> integer().
 main(X) ->
     case X > 0 of
-    true ->
-        _pipe = X,
-        double(_pipe);
+        true ->
+            _pipe = X,
+            double(_pipe);
 
-    false ->
-        0
-end.
+        false ->
+            0
+    end.

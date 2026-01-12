@@ -28,26 +28,26 @@ fn divide(a: Int, b: Int) -> Result(Int, Nil) {
 -spec divide(integer(), integer()) -> {ok, integer()} | {error, nil}.
 divide(A, B) ->
     case case B of
-    0 -> 0;
-    Gleam@denominator -> A rem Gleam@denominator
-end of
-    0 ->
-        {ok, case B of
-                0 -> 0;
-                Gleam@denominator@1 -> A div Gleam@denominator@1
-            end};
+        0 -> 0;
+        Gleam@denominator -> A rem Gleam@denominator
+    end of
+        0 ->
+            {ok, case B of
+                    0 -> 0;
+                    Gleam@denominator@1 -> A div Gleam@denominator@1
+                end};
 
-    _ ->
-        {error, nil}
-end.
+        _ ->
+            {error, nil}
+    end.
 
 -file("project/test/my/mod.gleam", 4).
 -spec main() -> {ok, integer()} | {error, nil}.
 main() ->
     case {ok, 10} of
-    {ok, Value} ->
-        divide(Value, 2);
+        {ok, Value} ->
+            divide(Value, 2);
 
-    {error, Error} ->
-        {error, Error}
-end.
+        {error, Error} ->
+            {error, Error}
+    end.

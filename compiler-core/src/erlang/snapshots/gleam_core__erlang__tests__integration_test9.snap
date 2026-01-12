@@ -18,4 +18,4 @@ pub type Pair(x, y) { Pair(x: x, y: y) } pub fn x() { Pair(1, 2) Pair(3., 4.) }
 -spec x() -> pair(float(), float()).
 x() ->
     {pair, 1, 2},
-{pair, 3.0, 4.0}.
+    {pair, 3.0, 4.0}.

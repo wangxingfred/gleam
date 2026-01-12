@@ -19,9 +19,9 @@ pub fn x(f) {
 -spec x(fun((integer()) -> L)) -> L.
 x(F) ->
     case begin
-    _pipe = 1,
-    F(_pipe)
-end of
-    X ->
-        X
-end.
+        _pipe = 1,
+        F(_pipe)
+    end of
+        X ->
+            X
+    end.

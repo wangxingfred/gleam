@@ -22,4 +22,4 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     F = fun() -> 1 end,
-F().
+    F().

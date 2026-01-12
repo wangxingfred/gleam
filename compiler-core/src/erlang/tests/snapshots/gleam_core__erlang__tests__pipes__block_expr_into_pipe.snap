@@ -27,7 +27,7 @@ id(A) ->
 -spec main() -> integer().
 main() ->
     _pipe = begin
-    X = 1,
-    X
-end,
-id(_pipe).
+        X = 1,
+        X
+    end,
+    id(_pipe).

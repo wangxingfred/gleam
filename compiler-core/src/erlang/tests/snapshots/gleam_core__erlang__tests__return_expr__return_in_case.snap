@@ -21,9 +21,9 @@ pub fn main(x) {
 -spec main(integer()) -> integer().
 main(X) ->
     case X of
-    1 ->
-        1;
+        1 ->
+            1;
 
-    _ ->
-        2
-end.
+        _ ->
+            2
+    end.

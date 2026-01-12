@@ -15,5 +15,5 @@ pub fn x() { let x = 1 let x = x + 1 x }
 -spec x() -> integer().
 x() ->
     X = 1,
-X@1 = X + 1,
-X@1.
+    X@1 = X + 1,
+    X@1.

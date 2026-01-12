@@ -30,10 +30,10 @@ pub fn main() {
 -spec main() -> {ok, wibble()} | {error, any()}.
 main() ->
     W = {wibble, 1, 2},
-case {ok, 3} of
-    {ok, Value} ->
-        {ok, {wibble, erlang:element(2, W), Value}};
+    case {ok, 3} of
+        {ok, Value} ->
+            {ok, {wibble, erlang:element(2, W), Value}};
 
-    {error, Error} ->
-        {error, Error}
-end.
+        {error, Error} ->
+            {error, Error}
+    end.

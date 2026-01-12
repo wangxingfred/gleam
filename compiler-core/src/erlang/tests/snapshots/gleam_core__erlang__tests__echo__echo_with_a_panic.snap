@@ -19,10 +19,10 @@ pub fn main() {
 -spec main() -> any().
 main() ->
     echo(erlang:error(#{gleam_error => panic,
-            message => <<"`panic` expression evaluated."/utf8>>,
-            file => <<?FILEPATH/utf8>>,
-            module => <<"my/mod"/utf8>>,
-            function => <<"main"/utf8>>,
-            line => 3}), nil, 3).
+                message => <<"`panic` expression evaluated."/utf8>>,
+                file => <<?FILEPATH/utf8>>,
+                module => <<"my/mod"/utf8>>,
+                function => <<"main"/utf8>>,
+                line => 3}), nil, 3).
 
 % ...omitted code from `templates/echo.erl`...

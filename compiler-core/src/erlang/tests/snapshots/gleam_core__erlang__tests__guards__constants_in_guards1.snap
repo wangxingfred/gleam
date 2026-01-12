@@ -24,9 +24,9 @@ pub fn main(arg) {
 -spec main(list(integer())) -> integer().
 main(Arg) ->
     case Arg of
-    _ when Arg =:= [1, 2, 3] ->
-        1;
+        _ when Arg =:= [1, 2, 3] ->
+            1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

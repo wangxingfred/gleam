@@ -21,9 +21,9 @@ pub fn main(x, y) {
 -spec main(boolean(), boolean()) -> integer().
 main(X, Y) ->
     case X of
-    _ when not Y andalso not X ->
-        0;
+        _ when not Y andalso not X ->
+            0;
 
-    _ ->
-        1
-end.
+        _ ->
+            1
+    end.

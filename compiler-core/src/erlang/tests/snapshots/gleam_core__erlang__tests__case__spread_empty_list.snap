@@ -21,6 +21,6 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     case [] of
-    _ ->
-        1
-end.
+        _ ->
+            1
+    end.

@@ -22,24 +22,24 @@ pub fn main(x: Result(Int, String)) -> Int {
 -spec main({ok, integer()} | {error, binary()}) -> integer().
 main(X) ->
     Value@1 = case X of
-    {ok, Value} -> Value;
-    _assert_fail ->
-        erlang:error(#{gleam_error => let_assert,
-                    message => <<"Pattern match failed, no pattern matched the value."/utf8>>,
-                    file => <<?FILEPATH/utf8>>,
-                    module => <<"my/mod"/utf8>>,
-                    function => <<"main"/utf8>>,
-                    line => 3,
-                    value => _assert_fail,
-                    start => 48,
-                    'end' => 72,
-                    pattern_start => 59,
-                    pattern_end => 68})
-end,
-case Value@1 > 10 of
-    true ->
-        Value@1;
+        {ok, Value} -> Value;
+        _assert_fail ->
+            erlang:error(#{gleam_error => let_assert,
+                        message => <<"Pattern match failed, no pattern matched the value."/utf8>>,
+                        file => <<?FILEPATH/utf8>>,
+                        module => <<"my/mod"/utf8>>,
+                        function => <<"main"/utf8>>,
+                        line => 3,
+                        value => _assert_fail,
+                        start => 48,
+                        'end' => 72,
+                        pattern_start => 59,
+                        pattern_end => 68})
+    end,
+    case Value@1 > 10 of
+        true ->
+            Value@1;
 
-    false ->
-        0
-end.
+        false ->
+            0
+    end.

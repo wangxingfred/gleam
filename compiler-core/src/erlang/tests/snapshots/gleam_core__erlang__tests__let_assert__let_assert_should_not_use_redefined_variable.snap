@@ -31,19 +31,19 @@ split_once(X, Y) ->
 -spec main() -> {ok, {binary(), binary()}} | {error, binary()}.
 main() ->
     String = <<"Hello, world!"/utf8>>,
-_assert_subject = split_once(String, <<"\n"/utf8>>),
-case _assert_subject of
-    {ok, {Prefix, String@1}} -> _assert_subject;
-    _assert_fail ->
-        erlang:error(#{gleam_error => let_assert,
-                    message => (<<"Failed to split: "/utf8, String/binary>>),
-                    file => <<?FILEPATH/utf8>>,
-                    module => <<"my/mod"/utf8>>,
-                    function => <<"main"/utf8>>,
-                    line => 8,
-                    value => _assert_fail,
-                    start => 148,
-                    'end' => 207,
-                    pattern_start => 159,
-                    pattern_end => 180})
-end.
+    _assert_subject = split_once(String, <<"\n"/utf8>>),
+    case _assert_subject of
+        {ok, {Prefix, String@1}} -> _assert_subject;
+        _assert_fail ->
+            erlang:error(#{gleam_error => let_assert,
+                        message => (<<"Failed to split: "/utf8, String/binary>>),
+                        file => <<?FILEPATH/utf8>>,
+                        module => <<"my/mod"/utf8>>,
+                        function => <<"main"/utf8>>,
+                        line => 8,
+                        value => _assert_fail,
+                        start => 148,
+                        'end' => 207,
+                        pattern_start => 159,
+                        pattern_end => 180})
+    end.

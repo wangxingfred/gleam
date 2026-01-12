@@ -22,17 +22,17 @@ pub fn divide(a, b) {
 -spec divide(integer(), integer()) -> integer().
 divide(A, B) ->
     case B =:= 0 of
-    true ->
-        erlang:error(#{gleam_error => panic,
-                message => <<"Cannot divide by 0"/utf8>>,
-                file => <<?FILEPATH/utf8>>,
-                module => <<"my/mod"/utf8>>,
-                function => <<"divide"/utf8>>,
-                line => 5});
+        true ->
+            erlang:error(#{gleam_error => panic,
+                    message => <<"Cannot divide by 0"/utf8>>,
+                    file => <<?FILEPATH/utf8>>,
+                    module => <<"my/mod"/utf8>>,
+                    function => <<"divide"/utf8>>,
+                    line => 5});
 
-    false ->
-        case B of
-            0 -> 0;
-            Gleam@denominator -> A div Gleam@denominator
-        end
-end.
+        false ->
+            case B of
+                0 -> 0;
+                Gleam@denominator -> A div Gleam@denominator
+            end
+    end.

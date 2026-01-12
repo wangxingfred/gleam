@@ -26,15 +26,15 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     Duplicate_name = 1,
-case 1 of
-    1 ->
-        Duplicate_name@1 = Duplicate_name + 1,
-        Duplicate_name@1;
+    case 1 of
+        1 ->
+            Duplicate_name@1 = Duplicate_name + 1,
+            Duplicate_name@1;
 
-    2 ->
-        Duplicate_name@1 = Duplicate_name + 1,
-        Duplicate_name@1;
+        2 ->
+            Duplicate_name@1 = Duplicate_name + 1,
+            Duplicate_name@1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

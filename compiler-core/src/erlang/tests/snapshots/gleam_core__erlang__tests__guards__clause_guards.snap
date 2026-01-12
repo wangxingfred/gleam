@@ -22,9 +22,9 @@ pub fn main(args) {
 -spec main(any()) -> integer().
 main(Args) ->
     case Args of
-    X when X =:= Args ->
-        1;
+        X when X =:= Args ->
+            1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

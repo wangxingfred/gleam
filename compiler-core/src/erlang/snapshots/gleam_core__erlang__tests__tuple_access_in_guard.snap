@@ -24,11 +24,11 @@ pub fn main() {
 -spec main() -> binary().
 main() ->
     Key = 10,
-X = [{10, 2}, {1, 2}],
-case X of
-    [First | Rest] when erlang:element(1, First) =:= Key ->
-        <<"ok"/utf8>>;
+    X = [{10, 2}, {1, 2}],
+    case X of
+        [First | Rest] when erlang:element(1, First) =:= Key ->
+            <<"ok"/utf8>>;
 
-    _ ->
-        <<"ko"/utf8>>
-end.
+        _ ->
+            <<"ko"/utf8>>
+    end.

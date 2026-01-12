@@ -29,16 +29,16 @@ expression: "\n    type Test { Test(x: Int, y: Float) }\n    pub fn main() {\n  
 -spec main() -> integer().
 main() ->
     X = {test, 1, 3.0},
-case X of
-    _ when X =:= {test, 1, 1.0} ->
-        1;
+    case X of
+        _ when X =:= {test, 1, 1.0} ->
+            1;
 
-    _ when X =:= {test, 2, 2.0} ->
-        2;
+        _ when X =:= {test, 2, 2.0} ->
+            2;
 
-    _ when X =/= {test, 2, 3.0} ->
-        2;
+        _ when X =/= {test, 2, 3.0} ->
+            2;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

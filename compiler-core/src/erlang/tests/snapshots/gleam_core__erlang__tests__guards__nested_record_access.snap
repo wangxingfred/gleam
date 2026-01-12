@@ -41,9 +41,9 @@ pub fn a(a: A) {
 -spec a(a()) -> integer().
 a(A) ->
     case A of
-    _ when erlang:element(2, erlang:element(2, erlang:element(2, A))) ->
-        1;
+        _ when erlang:element(2, erlang:element(2, erlang:element(2, A))) ->
+            1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

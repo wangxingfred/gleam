@@ -21,9 +21,9 @@ pub fn main(x: Int) -> BitArray {
 -spec main(integer()) -> bitstring().
 main(X) ->
     case X > 0 of
-    true ->
-        <<X:32>>;
+        true ->
+            <<X:32>>;
 
-    false ->
-        <<0:32>>
-end.
+        false ->
+            <<0:32>>
+    end.

@@ -27,11 +27,11 @@ pub fn main(x: Int) -> Int {
 -spec main(integer()) -> integer().
 main(X) ->
     case X > 0 of
-    true ->
-        X * 2;
+        true ->
+            X * 2;
 
-    false ->
-        Inner = X,
-        Result = Inner + 1,
-        Result
-end.
+        false ->
+            Inner = X,
+            Result = Inner + 1,
+            Result
+    end.

@@ -21,9 +21,9 @@ pub fn main(t: #(Int, Int)) -> Int {
 -spec main({integer(), integer()}) -> integer().
 main(T) ->
     case erlang:element(1, T) > erlang:element(2, T) of
-    true ->
-        erlang:element(1, T);
+        true ->
+            erlang:element(1, T);
 
-    false ->
-        erlang:element(2, T)
-end.
+        false ->
+            erlang:element(2, T)
+    end.

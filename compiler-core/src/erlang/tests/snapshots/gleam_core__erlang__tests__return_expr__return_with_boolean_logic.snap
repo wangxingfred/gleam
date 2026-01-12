@@ -21,9 +21,9 @@ pub fn main(a: Bool, b: Bool) -> Bool {
 -spec main(boolean(), boolean()) -> boolean().
 main(A, B) ->
     case A andalso B of
-    true ->
-        true;
+        true ->
+            true;
 
-    false ->
-        A orelse B
-end.
+        false ->
+            A orelse B
+    end.

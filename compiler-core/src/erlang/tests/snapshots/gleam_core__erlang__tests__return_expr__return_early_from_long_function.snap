@@ -36,27 +36,27 @@ pub fn main(x: Int) -> Int {
 -spec main(integer()) -> integer().
 main(X) ->
     Step1 = X + 1,
-case Step1 < 0 of
-    true ->
-        -1;
+    case Step1 < 0 of
+        true ->
+            -1;
 
-    false ->
-        0,
-        Step2 = Step1 * 2,
-        case Step2 > 100 of
-            true ->
-                100;
+        false ->
+            0,
+            Step2 = Step1 * 2,
+            case Step2 > 100 of
+                true ->
+                    100;
 
-            false ->
-                0,
-                Step3 = Step2 + 10,
-                case Step3 > 50 of
-                    true ->
-                        Step3;
+                false ->
+                    0,
+                    Step3 = Step2 + 10,
+                    case Step3 > 50 of
+                        true ->
+                            Step3;
 
-                    false ->
-                        0,
-                        Step3 * 2
-                end
-        end
-end.
+                        false ->
+                            0,
+                            Step3 * 2
+                    end
+            end
+    end.

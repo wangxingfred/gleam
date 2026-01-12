@@ -30,4 +30,4 @@ pub fn main(x: Int) -> Int {
 -spec main(integer()) -> integer().
 main(X) ->
     A = {a, X},
-erlang:element(2, A).
+    erlang:element(2, A).

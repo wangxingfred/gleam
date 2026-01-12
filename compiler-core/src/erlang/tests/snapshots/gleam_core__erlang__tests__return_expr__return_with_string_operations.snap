@@ -21,9 +21,9 @@ pub fn main(s: String) -> String {
 -spec main(binary()) -> binary().
 main(S) ->
     case S of
-    <<""/utf8>> ->
-        <<"empty"/utf8>>;
+        <<""/utf8>> ->
+            <<"empty"/utf8>>;
 
-    _ ->
-        <<S/binary, " processed"/utf8>>
-end.
+        _ ->
+            <<S/binary, " processed"/utf8>>
+    end.

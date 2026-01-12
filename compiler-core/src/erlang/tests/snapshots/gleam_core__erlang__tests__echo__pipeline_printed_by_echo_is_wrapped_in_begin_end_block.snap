@@ -29,13 +29,13 @@ wibble(N) ->
 -spec main() -> integer().
 main() ->
     echo(
-    begin
-        _pipe = 123,
-        _pipe@1 = wibble(_pipe),
-        wibble(_pipe@1)
-    end,
-    nil,
-    3
-).
+        begin
+            _pipe = 123,
+            _pipe@1 = wibble(_pipe),
+            wibble(_pipe@1)
+        end,
+        nil,
+        3
+    ).
 
 % ...omitted code from `templates/echo.erl`...

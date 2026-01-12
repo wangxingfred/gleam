@@ -19,5 +19,5 @@ pub fn go() {
 -spec go() -> integer().
 go() ->
     Y = 1,
-Y@1 = 2,
-Y@1.
+    Y@1 = 2,
+    Y@1.

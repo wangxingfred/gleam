@@ -28,5 +28,5 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     Triple = {triple, 1, 2, 3},
-{triple, The_a, _, The_c} = Triple,
-The_c.
+    {triple, The_a, _, The_c} = Triple,
+    The_c.

@@ -22,9 +22,9 @@ pub fn main(x) {
 -spec main(list(integer())) -> integer().
 main(X) ->
     case X of
-    _ when X =:= [1, 2, 3] ->
-        1;
+        _ when X =:= [1, 2, 3] ->
+            1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

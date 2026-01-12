@@ -30,9 +30,9 @@ helper(X) ->
 -spec main(integer()) -> integer().
 main(X) ->
     case X > 10 of
-    true ->
-        helper(X);
+        true ->
+            helper(X);
 
-    false ->
-        X + 1
-end.
+        false ->
+            X + 1
+    end.

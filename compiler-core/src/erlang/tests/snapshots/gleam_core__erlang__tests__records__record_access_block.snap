@@ -27,9 +27,9 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     erlang:element(
-    2,
-    begin
-        Thing = {thing, 1, 2},
-        Thing
-    end
-).
+        2,
+        begin
+            Thing = {thing, 1, 2},
+            Thing
+        end
+    ).

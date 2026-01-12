@@ -22,12 +22,12 @@ pub fn main(x: Int) -> Int {
 -spec main(integer()) -> integer().
 main(X) ->
     case X of
-    N when N > 10 ->
-        N * 2;
+        N when N > 10 ->
+            N * 2;
 
-    N@1 when N@1 > 5 ->
-        N@1 + 1;
+        N@1 when N@1 > 5 ->
+            N@1 + 1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

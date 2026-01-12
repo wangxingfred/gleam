@@ -27,13 +27,13 @@ pub fn main() -> Int {
 -spec main() -> integer().
 main() ->
     Outer = fun(X) ->
-    Inner = fun(Y) -> case Y > 0 of
-            true ->
-                Y * 2;
+        Inner = fun(Y) -> case Y > 0 of
+                true ->
+                    Y * 2;
 
-            false ->
-                0
-        end end,
-    Inner(X) + 1
-end,
-Outer(5).
+                false ->
+                    0
+            end end,
+        Inner(X) + 1
+    end,
+    Outer(5).

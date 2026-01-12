@@ -23,15 +23,15 @@ pub fn main(x: Int) -> Int {
 -spec main(integer()) -> integer().
 main(X) ->
     case X of
-    1 ->
-        10;
+        1 ->
+            10;
 
-    2 ->
-        20;
+        2 ->
+            20;
 
-    3 ->
-        30;
+        3 ->
+            30;
 
-    _ ->
-        40
-end.
+        _ ->
+            40
+    end.

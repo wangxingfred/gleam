@@ -24,7 +24,7 @@ pub fn sum() {
 -spec sum() -> integer().
 sum() ->
     case {1, 2} of
-    {A, B} ->
-        _inline_a_0 = 7,
-        (A + B) + _inline_a_0
-end.
+        {A, B} ->
+            _inline_a_0 = 7,
+            (A + B) + _inline_a_0
+    end.

@@ -29,7 +29,7 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     Triple = {triple, 1, 2, 3},
-case Triple of
-    {triple, _, The_b, _} ->
-        The_b
-end.
+    case Triple of
+        {triple, _, The_b, _} ->
+            The_b
+    end.

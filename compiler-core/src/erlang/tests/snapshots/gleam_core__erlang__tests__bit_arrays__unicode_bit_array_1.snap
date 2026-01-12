@@ -19,4 +19,4 @@ expression: "\n    pub fn main() {\n        let emoji = \"\\u{1F600}\"\n        
 -spec main() -> bitstring().
 main() ->
     Emoji = <<"\x{1F600}"/utf8>>,
-Arr = <<Emoji/binary>>.
+    Arr = <<Emoji/binary>>.

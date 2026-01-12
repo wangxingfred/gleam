@@ -22,12 +22,12 @@ pub fn divide(a, b) {
 -spec divide(integer(), integer()) -> integer().
 divide(A, B) ->
     case B =:= 0 of
-    true ->
-        0;
+        true ->
+            0;
 
-    false ->
-        case B of
-            0 -> 0;
-            Gleam@denominator -> A div Gleam@denominator
-        end
-end.
+        false ->
+            case B of
+                0 -> 0;
+                Gleam@denominator -> A div Gleam@denominator
+            end
+    end.

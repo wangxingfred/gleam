@@ -29,11 +29,11 @@ name() ->
 -spec main() -> integer().
 main() ->
     echo(1, case name() of
-        <<"Giacomo"/utf8>> ->
-            <<"hello Jak!"/utf8>>;
+            <<"Giacomo"/utf8>> ->
+                <<"hello Jak!"/utf8>>;
 
-        _ ->
-            <<"hello!"/utf8>>
-    end, 3).
+            _ ->
+                <<"hello!"/utf8>>
+        end, 3).
 
 % ...omitted code from `templates/echo.erl`...

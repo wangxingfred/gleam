@@ -22,12 +22,12 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     echo(
-    begin
+        begin
+            nil,
+            1
+        end,
         nil,
-        1
-    end,
-    nil,
-    3
-).
+        3
+    ).
 
 % ...omitted code from `templates/echo.erl`...

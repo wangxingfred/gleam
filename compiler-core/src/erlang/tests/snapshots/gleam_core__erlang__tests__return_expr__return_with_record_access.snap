@@ -28,9 +28,9 @@ pub fn main(p: Point) -> Int {
 -spec main(point()) -> integer().
 main(P) ->
     case erlang:element(2, P) > 0 of
-    true ->
-        erlang:element(2, P) + erlang:element(3, P);
+        true ->
+            erlang:element(2, P) + erlang:element(3, P);
 
-    false ->
-        0
-end.
+        false ->
+            0
+    end.

@@ -23,16 +23,16 @@ pub fn main() {
 -spec main() -> bitstring().
 main() ->
     Code = <<"hello world"/utf8>>,
-Pre = 1,
-case Code of
-    <<Pre@1:Pre/binary, _/binary>> ->
-        Pre@1;
+    Pre = 1,
+    case Code of
+        <<Pre@1:Pre/binary, _/binary>> ->
+            Pre@1;
 
-    _ ->
-        erlang:error(#{gleam_error => panic,
-                message => <<"`panic` expression evaluated."/utf8>>,
-                file => <<?FILEPATH/utf8>>,
-                module => <<"my/mod"/utf8>>,
-                function => <<"main"/utf8>>,
-                line => 7})
-end.
+        _ ->
+            erlang:error(#{gleam_error => panic,
+                    message => <<"`panic` expression evaluated."/utf8>>,
+                    file => <<?FILEPATH/utf8>>,
+                    module => <<"my/mod"/utf8>>,
+                    function => <<"main"/utf8>>,
+                    line => 7})
+    end.

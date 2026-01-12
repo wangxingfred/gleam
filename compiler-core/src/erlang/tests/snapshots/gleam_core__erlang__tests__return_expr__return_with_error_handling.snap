@@ -25,15 +25,15 @@ pub fn main(x: Result(Int, String)) -> Result(Int, String) {
     {error, binary()}.
 main(X) ->
     case X of
-    {ok, Value} ->
-        case Value > 0 of
-            true ->
-                {ok, Value * 2};
+        {ok, Value} ->
+            case Value > 0 of
+                true ->
+                    {ok, Value * 2};
 
-            false ->
-                {error, <<"negative value"/utf8>>}
-        end;
+                false ->
+                    {error, <<"negative value"/utf8>>}
+            end;
 
-    {error, Msg} ->
-        {error, <<"wrapped: "/utf8, Msg/binary>>}
-end.
+        {error, Msg} ->
+            {error, <<"wrapped: "/utf8, Msg/binary>>}
+    end.

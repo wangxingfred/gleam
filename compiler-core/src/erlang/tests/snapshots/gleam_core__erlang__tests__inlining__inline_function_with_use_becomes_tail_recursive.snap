@@ -23,12 +23,12 @@ pub fn count(from: Int, to: Int) -> Int {
 -spec count(integer(), integer()) -> integer().
 count(From, To) ->
     case From >= To of
-    true ->
-        From;
+        true ->
+            From;
 
-    false ->
-        echo(From, nil, 6),
-        count(From + 1, To)
-end.
+        false ->
+            echo(From, nil, 6),
+            count(From + 1, To)
+    end.
 
 % ...omitted code from `templates/echo.erl`...

@@ -21,6 +21,6 @@ inc(X) ->
 -spec go() -> integer().
 go() ->
     _pipe = 1,
-_pipe@1 = inc(_pipe),
-_pipe@2 = inc(_pipe@1),
-inc(_pipe@2).
+    _pipe@1 = inc(_pipe),
+    _pipe@2 = inc(_pipe@1),
+    inc(_pipe@2).

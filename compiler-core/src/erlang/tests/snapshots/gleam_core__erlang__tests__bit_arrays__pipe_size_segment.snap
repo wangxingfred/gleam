@@ -28,6 +28,6 @@ identity(X) ->
 -spec main() -> bitstring().
 main() ->
     <<16#AE:(lists:max([(begin
-        _pipe = 5,
-        identity(_pipe)
-    end), 0]))>>.
+            _pipe = 5,
+            identity(_pipe)
+        end), 0]))>>.

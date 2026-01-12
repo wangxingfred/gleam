@@ -25,10 +25,10 @@ pub fn main(arg) {
 -spec main({ok, integer()} | {error, any()}) -> integer().
 main(Arg) ->
     _ = {ok, 1},
-case Arg of
-    _ when Arg =:= {ok, 1} ->
-        1;
+    case Arg of
+        _ when Arg =:= {ok, 1} ->
+            1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

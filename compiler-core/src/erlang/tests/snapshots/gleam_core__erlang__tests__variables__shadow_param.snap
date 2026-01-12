@@ -18,4 +18,4 @@ fn(board) { board }
 -spec main(I) -> I.
 main(Board) ->
     fun(Board@1) -> Board@1 end,
-Board.
+    Board.

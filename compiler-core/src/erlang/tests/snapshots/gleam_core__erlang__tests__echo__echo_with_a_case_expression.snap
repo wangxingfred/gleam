@@ -21,8 +21,8 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     echo(case 1 of
-        _ ->
-            2
-    end, nil, 3).
+            _ ->
+                2
+        end, nil, 3).
 
 % ...omitted code from `templates/echo.erl`...

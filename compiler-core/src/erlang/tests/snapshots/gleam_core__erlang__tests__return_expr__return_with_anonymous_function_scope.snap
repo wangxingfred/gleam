@@ -25,11 +25,11 @@ pub fn main() -> Int {
 -spec main() -> integer().
 main() ->
     F = fun(X) -> case X > 0 of
-        true ->
-            X;
+            true ->
+                X;
 
-        false ->
-            0
-    end end,
-Result = F(5),
-Result + 10.
+            false ->
+                0
+        end end,
+    Result = F(5),
+    Result + 10.

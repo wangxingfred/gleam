@@ -19,27 +19,27 @@ pub fn assert_answer(x) {
 -spec assert_answer(integer()) -> nil.
 assert_answer(X) ->
     _assert_subject = 42,
-case X =:= _assert_subject of
-    true -> nil;
-    false -> erlang:error(#{gleam_error => assert,
-            message => <<"Assertion failed."/utf8>>,
-            file => <<?FILEPATH/utf8>>,
-            module => <<"my/mod"/utf8>>,
-            function => <<"assert_answer"/utf8>>,
-            line => 3,
-            kind => binary_operator,
-            operator => '==',
-            left => #{kind => expression,
-                value => X,
-                start => 36,
-                'end' => 37
-                },
-            right => #{kind => literal,
-                value => _assert_subject,
-                start => 41,
-                'end' => 43
-                },
-            start => 29,
-            'end' => 43,
-            expression_start => 36})
-end.
+    case X =:= _assert_subject of
+        true -> nil;
+        false -> erlang:error(#{gleam_error => assert,
+                message => <<"Assertion failed."/utf8>>,
+                file => <<?FILEPATH/utf8>>,
+                module => <<"my/mod"/utf8>>,
+                function => <<"assert_answer"/utf8>>,
+                line => 3,
+                kind => binary_operator,
+                operator => '==',
+                left => #{kind => expression,
+                    value => X,
+                    start => 36,
+                    'end' => 37
+                    },
+                right => #{kind => literal,
+                    value => _assert_subject,
+                    start => 41,
+                    'end' => 43
+                    },
+                start => 29,
+                'end' => 43,
+                expression_start => 36})
+    end.

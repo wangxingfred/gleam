@@ -20,9 +20,9 @@ pub fn test_conditional_return(x: Int) -> Int {
 -spec test_conditional_return(integer()) -> integer().
 test_conditional_return(X) ->
     case X > 0 of
-    true ->
-        X * 2;
+        true ->
+            X * 2;
 
-    false ->
-        X + 1
-end.
+        false ->
+            X + 1
+    end.

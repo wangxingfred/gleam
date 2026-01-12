@@ -25,4 +25,4 @@ x() ->
 -spec main() -> bitstring().
 main() ->
     A = <<(x())/integer>>,
-A.
+    A.

@@ -22,12 +22,12 @@ pub fn main(args) {
 -spec main(list(boolean())) -> integer().
 main(Args) ->
     case Args of
-    [X] when X ->
-        1;
+        [X] when X ->
+            1;
 
-    [X, _] when X ->
-        1;
+        [X, _] when X ->
+            1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

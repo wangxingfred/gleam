@@ -21,6 +21,6 @@ pub fn main() {
 -spec main() -> list(any()).
 main() ->
     case [] of
-    Rest ->
-        Rest
-end.
+        Rest ->
+            Rest
+    end.

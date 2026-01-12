@@ -34,7 +34,7 @@ return_person() ->
 -spec main() -> person().
 main() ->
     New_p = begin
-    _record = return_person(),
-    {person, erlang:element(2, _record), 28}
-end,
-New_p.
+        _record = return_person(),
+        {person, erlang:element(2, _record), 28}
+    end,
+    New_p.

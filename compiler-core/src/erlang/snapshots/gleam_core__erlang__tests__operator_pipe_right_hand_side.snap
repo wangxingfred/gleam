@@ -26,6 +26,6 @@ id(X) ->
 -spec bool_expr(boolean(), boolean()) -> boolean().
 bool_expr(X, Y) ->
     Y orelse begin
-    _pipe = X,
-    id(_pipe)
-end.
+        _pipe = X,
+        id(_pipe)
+    end.

@@ -23,14 +23,14 @@ pub fn go(x) {
 -spec go(binary()) -> binary().
 go(X) ->
     case X of
-    <<"Hello, "/utf8, Name/binary>> when Name =:= <<"Dude"/utf8>> ->
-        Greeting = <<"Hello, "/utf8>>,
-        <<Greeting/binary, "Mate"/utf8>>;
+        <<"Hello, "/utf8, Name/binary>> when Name =:= <<"Dude"/utf8>> ->
+            Greeting = <<"Hello, "/utf8>>,
+            <<Greeting/binary, "Mate"/utf8>>;
 
-    <<"Hello, "/utf8, Name@1/binary>> ->
-        Greeting@1 = <<"Hello, "/utf8>>,
-        Greeting@1;
+        <<"Hello, "/utf8, Name@1/binary>> ->
+            Greeting@1 = <<"Hello, "/utf8>>,
+            Greeting@1;
 
-    _ ->
-        <<"Unknown"/utf8>>
-end.
+        _ ->
+            <<"Unknown"/utf8>>
+    end.

@@ -27,9 +27,9 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     A = 10,
-B = 20,
-begin
-    _inline_a_0 = 7,
-    (A + B) + _inline_a_0
-end,
-A.
+    B = 20,
+    begin
+        _inline_a_0 = 7,
+        (A + B) + _inline_a_0
+    end,
+    A.

@@ -24,9 +24,9 @@ pub fn main(arg) {
 -spec main(bitstring()) -> integer().
 main(Arg) ->
     case Arg of
-    _ when Arg =:= <<1, "ok"/utf8, 3, 4:50>> ->
-        1;
+        _ when Arg =:= <<1, "ok"/utf8, 3, 4:50>> ->
+            1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

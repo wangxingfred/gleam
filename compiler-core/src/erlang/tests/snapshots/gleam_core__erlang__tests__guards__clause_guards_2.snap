@@ -22,9 +22,9 @@ pub fn main(args) {
 -spec main(boolean()) -> integer().
 main(Args) ->
     case Args of
-    X when (X andalso X) orelse ((X =:= X) andalso X) ->
-        1;
+        X when (X andalso X) orelse ((X =:= X) andalso X) ->
+            1;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.

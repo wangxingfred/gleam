@@ -21,9 +21,9 @@ pub fn main() {
 -spec main() -> {ok, any()} | {error, integer()}.
 main() ->
     case {ok, 10} of
-    {ok, Value} ->
-        {error, Value};
+        {ok, Value} ->
+            {error, Value};
 
-    {error, Error} ->
-        {error, Error}
-end.
+        {error, Error} ->
+            {error, Error}
+    end.

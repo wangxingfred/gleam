@@ -22,12 +22,12 @@ pub fn main(x: List(Int)) -> Int {
 -spec main(list(integer())) -> integer().
 main(X) ->
     case X of
-    [] ->
-        0;
+        [] ->
+            0;
 
-    [First] ->
-        First;
+        [First] ->
+            First;
 
-    [First@1, Second | _] ->
-        First@1 + Second
-end.
+        [First@1, Second | _] ->
+            First@1 + Second
+    end.

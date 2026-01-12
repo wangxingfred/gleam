@@ -33,8 +33,8 @@ id(X) ->
 -spec main(x()) -> x().
 main(X) ->
     {x,
-    begin
-        _pipe = 1,
-        id(_pipe)
-    end,
-    erlang:element(3, X)}.
+        begin
+            _pipe = 1,
+            id(_pipe)
+        end,
+        erlang:element(3, X)}.

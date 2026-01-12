@@ -28,9 +28,9 @@ double(X) ->
 -spec main() -> {ok, integer()} | {error, any()}.
 main() ->
     case {ok, 10} of
-    {ok, Value} ->
-        {ok, double(Value)};
+        {ok, Value} ->
+            {ok, double(Value)};
 
-    {error, Error} ->
-        {error, Error}
-end.
+        {error, Error} ->
+            {error, Error}
+    end.

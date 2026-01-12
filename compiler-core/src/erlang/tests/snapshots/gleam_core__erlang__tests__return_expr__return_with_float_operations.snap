@@ -21,9 +21,9 @@ pub fn main(x: Float) -> Float {
 -spec main(float()) -> float().
 main(X) ->
     case X > +0.0 of
-    true ->
-        X * 2.5;
+        true ->
+            X * 2.5;
 
-    false ->
-        +0.0
-end.
+        false ->
+            +0.0
+    end.

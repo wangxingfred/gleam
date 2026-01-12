@@ -25,7 +25,7 @@ fn pair(f) {
 -spec pair(fun(() -> L)) -> {L, L}.
 pair(F) ->
     X = F(),
-{X, X}.
+    {X, X}.
 
 -file("project/test/my/mod.gleam", 2).
 -spec main() -> {integer(), integer()}.

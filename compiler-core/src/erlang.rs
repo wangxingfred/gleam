@@ -490,8 +490,7 @@ fn module_function<'a>(
         })
         .unwrap_or_else(|| {
             let body = cps::cps_transform(function.body.clone());
-            let doc = statement_sequence(&body, &mut env);
-            EcoString::from(doc.to_pretty_string(MAX_COLUMNS)).to_doc()
+            statement_sequence(&body, &mut env)
         });
 
     let attributes = file_attribute;

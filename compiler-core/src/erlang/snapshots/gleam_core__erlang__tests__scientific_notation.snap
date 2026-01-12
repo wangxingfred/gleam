@@ -20,4 +20,4 @@ pub fn main() {
 -spec main() -> float().
 main() ->
     1.0e6,
-1.0e6.
+    1.0e6.

@@ -24,13 +24,13 @@ expression: "\n          import hero\n          pub fn main() {\n            let
 -spec main() -> boolean().
 main() ->
     Name = <<"Bruce Wayne"/utf8>>,
-case Name of
-    N when N =:= erlang:element(
-        2,
-        erlang:element(2, {hero, {person, <<"Bruce Wayne"/utf8>>}})
-    ) ->
-        true;
+    case Name of
+        N when N =:= erlang:element(
+            2,
+            erlang:element(2, {hero, {person, <<"Bruce Wayne"/utf8>>}})
+        ) ->
+            true;
 
-    _ ->
-        false
-end.
+        _ ->
+            false
+    end.

@@ -24,10 +24,10 @@ pub fn main() {
 -spec main() -> float().
 main() ->
     case 1.0 of
-    A when A < +0.0 ->
-        A@1 = A,
-        A@1;
+        A when A < +0.0 ->
+            A@1 = A,
+            A@1;
 
-    _ ->
-        +0.0
-end.
+        _ ->
+            +0.0
+    end.

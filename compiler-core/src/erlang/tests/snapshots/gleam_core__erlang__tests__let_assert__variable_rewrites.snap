@@ -19,33 +19,33 @@ pub fn go() {
 -spec go() -> integer().
 go() ->
     Y@1 = case {ok, 1} of
-    {ok, Y} -> Y;
-    _assert_fail ->
-        erlang:error(#{gleam_error => let_assert,
-                    message => <<"Pattern match failed, no pattern matched the value."/utf8>>,
-                    file => <<?FILEPATH/utf8>>,
-                    module => <<"my/mod"/utf8>>,
-                    function => <<"go"/utf8>>,
-                    line => 2,
-                    value => _assert_fail,
-                    start => 16,
-                    'end' => 40,
-                    pattern_start => 27,
-                    pattern_end => 32})
-end,
-Y@3 = case {ok, 1} of
-    {ok, Y@2} -> Y@2;
-    _assert_fail@1 ->
-        erlang:error(#{gleam_error => let_assert,
-                    message => <<"Pattern match failed, no pattern matched the value."/utf8>>,
-                    file => <<?FILEPATH/utf8>>,
-                    module => <<"my/mod"/utf8>>,
-                    function => <<"go"/utf8>>,
-                    line => 3,
-                    value => _assert_fail@1,
-                    start => 43,
-                    'end' => 67,
-                    pattern_start => 54,
-                    pattern_end => 59})
-end,
-Y@3.
+        {ok, Y} -> Y;
+        _assert_fail ->
+            erlang:error(#{gleam_error => let_assert,
+                        message => <<"Pattern match failed, no pattern matched the value."/utf8>>,
+                        file => <<?FILEPATH/utf8>>,
+                        module => <<"my/mod"/utf8>>,
+                        function => <<"go"/utf8>>,
+                        line => 2,
+                        value => _assert_fail,
+                        start => 16,
+                        'end' => 40,
+                        pattern_start => 27,
+                        pattern_end => 32})
+    end,
+    Y@3 = case {ok, 1} of
+        {ok, Y@2} -> Y@2;
+        _assert_fail@1 ->
+            erlang:error(#{gleam_error => let_assert,
+                        message => <<"Pattern match failed, no pattern matched the value."/utf8>>,
+                        file => <<?FILEPATH/utf8>>,
+                        module => <<"my/mod"/utf8>>,
+                        function => <<"go"/utf8>>,
+                        line => 3,
+                        value => _assert_fail@1,
+                        start => 43,
+                        'end' => 67,
+                        pattern_start => 54,
+                        pattern_end => 59})
+    end,
+    Y@3.

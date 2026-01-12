@@ -22,9 +22,9 @@ pub fn go(x) {
 -spec go(binary()) -> nil.
 go(X) ->
     case X of
-    <<"Hello, "/utf8, _/binary>> ->
-        nil;
+        <<"Hello, "/utf8, _/binary>> ->
+            nil;
 
-    _ ->
-        nil
-end.
+        _ ->
+            nil
+    end.

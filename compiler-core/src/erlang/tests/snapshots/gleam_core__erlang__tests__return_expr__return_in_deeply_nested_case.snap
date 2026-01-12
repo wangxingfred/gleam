@@ -36,42 +36,42 @@ pub fn main(x: Int, y: Int, z: Int) -> Int {
 -spec main(integer(), integer(), integer()) -> integer().
 main(X, Y, Z) ->
     case X of
-    1 ->
-        case Y of
-            1 ->
-                case Z of
-                    1 ->
-                        111;
+        1 ->
+            case Y of
+                1 ->
+                    case Z of
+                        1 ->
+                            111;
 
-                    2 ->
-                        112;
+                        2 ->
+                            112;
 
-                    _ ->
-                        110
-                end;
+                        _ ->
+                            110
+                    end;
 
-            2 ->
-                case Z of
-                    1 ->
-                        121;
+                2 ->
+                    case Z of
+                        1 ->
+                            121;
 
-                    _ ->
-                        120
-                end;
+                        _ ->
+                            120
+                    end;
 
-            _ ->
-                100
-        end;
+                _ ->
+                    100
+            end;
 
-    2 ->
-        case Y of
-            1 ->
-                210;
+        2 ->
+            case Y of
+                1 ->
+                    210;
 
-            _ ->
-                200
-        end;
+                _ ->
+                    200
+            end;
 
-    _ ->
-        0
-end.
+        _ ->
+            0
+    end.
