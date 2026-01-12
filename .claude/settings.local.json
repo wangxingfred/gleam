@@ -27,7 +27,10 @@
       "Bash(ls compiler-core/src/erlang/tests/snapshots/gleam_core__erlang__tests__return_expr__*.snap.new)",
       "Bash(cargo test:*)",
       "Bash(cargo insta review:*)",
-      "Bash(cargo insta accept:*)"
+      "Bash(cargo insta accept:*)",
+      "Bash(git merge:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
