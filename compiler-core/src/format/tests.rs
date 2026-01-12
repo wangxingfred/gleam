@@ -6778,3 +6778,34 @@ fn remove_redundant_negation_from_literal_int_3() {
 "
     );
 }
+
+#[test]
+fn call_with_single_call_argument_and_trailing_comment() {
+    assert_format!(
+        "pub fn main() {
+  call(
+    wibble(wobble),
+    // ...
+  )
+}
+"
+    );
+}
+
+#[test]
+fn call_with_single_call_argument_and_trailing_comment_2() {
+    assert_format_rewrite!(
+        "pub fn main() {
+  call(wibble(wobble) // ...
+  )
+}
+",
+        "pub fn main() {
+  call(
+    wibble(wobble),
+    // ...
+  )
+}
+"
+    );
+}
