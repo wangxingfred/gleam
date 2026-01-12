@@ -20,6 +20,6 @@ pub fn go() {
 -spec go() -> integer().
 go() ->
     Fifteen = 16#F,
-    Nine = 8#11,
-    Ten = 2#1010,
-    Fifteen.
+Nine = 8#11,
+Ten = 2#1010,
+Fifteen.

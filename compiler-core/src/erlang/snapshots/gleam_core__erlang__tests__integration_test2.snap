@@ -17,20 +17,20 @@ pub fn tail(list) { case list { [x, ..xs] -> xs z -> list } }
 -spec second(list(integer())) -> integer().
 second(List) ->
     case List of
-        [X, Y] ->
-            Y;
+    [X, Y] ->
+        Y;
 
-        Z ->
-            1
-    end.
+    Z ->
+        1
+end.
 
 -file("project/test/my/mod.gleam", 2).
 -spec tail(list(P)) -> list(P).
 tail(List) ->
     case List of
-        [X | Xs] ->
-            Xs;
+    [X | Xs] ->
+        Xs;
 
-        Z ->
-            List
-    end.
+    Z ->
+        List
+end.

@@ -24,10 +24,10 @@ pub fn go(a) {
 -spec go(integer()) -> integer().
 go(A) ->
     case A of
-        99 ->
-            A@1 = A,
-            1;
+    99 ->
+        A@1 = A,
+        1;
 
-        _ ->
-            A
-    end.
+    _ ->
+        A
+end.

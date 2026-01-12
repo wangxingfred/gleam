@@ -31,23 +31,23 @@ identity(A) ->
 -spec main() -> nil.
 main() ->
     case identity(true) of
-        true -> nil;
-        false -> erlang:error(#{gleam_error => assert,
-                message => begin
-                    Message = identity(<<"This shouldn't fail"/utf8>>),
-                    Message
-                end,
-                file => <<?FILEPATH/utf8>>,
-                module => <<"my/mod"/utf8>>,
-                function => <<"main"/utf8>>,
-                line => 7,
-                kind => function_call,
-                arguments => [#{kind => literal,
-                        value => true,
-                        start => 59,
-                        'end' => 63
-                        }],
-                start => 43,
-                'end' => 64,
-                expression_start => 50})
-    end.
+    true -> nil;
+    false -> erlang:error(#{gleam_error => assert,
+            message => begin
+                Message = identity(<<"This shouldn't fail"/utf8>>),
+                Message
+            end,
+            file => <<?FILEPATH/utf8>>,
+            module => <<"my/mod"/utf8>>,
+            function => <<"main"/utf8>>,
+            line => 7,
+            kind => function_call,
+            arguments => [#{kind => literal,
+                    value => true,
+                    start => 59,
+                    'end' => 63
+                    }],
+            start => 43,
+            'end' => 64,
+            expression_start => 50})
+end.

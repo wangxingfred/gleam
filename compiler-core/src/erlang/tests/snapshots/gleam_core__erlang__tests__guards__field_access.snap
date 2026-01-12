@@ -32,11 +32,11 @@ expression: "\n        pub type Person {\n          Person(username: String, nam
 -spec main() -> binary().
 main() ->
     Given_name = <<"jack"/utf8>>,
-    Raiden = {person, <<"raiden"/utf8>>, <<"jack"/utf8>>, 31},
-    case Given_name of
-        Name when Name =:= erlang:element(3, Raiden) ->
-            <<"It's jack"/utf8>>;
+Raiden = {person, <<"raiden"/utf8>>, <<"jack"/utf8>>, 31},
+case Given_name of
+    Name when Name =:= erlang:element(3, Raiden) ->
+        <<"It's jack"/utf8>>;
 
-        _ ->
-            <<"It's not jack"/utf8>>
-    end.
+    _ ->
+        <<"It's not jack"/utf8>>
+end.

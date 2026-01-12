@@ -22,14 +22,14 @@ pub fn main(x) {
 -spec main(binary()) -> binary().
 main(X) ->
     case X of
-        <<"a"/utf8, _/binary>> ->
-            Letter = <<"a"/utf8>>,
-            Letter;
+    <<"a"/utf8, _/binary>> ->
+        Letter = <<"a"/utf8>>,
+        Letter;
 
-        <<"b"/utf8, _/binary>> ->
-            Letter = <<"b"/utf8>>,
-            Letter;
+    <<"b"/utf8, _/binary>> ->
+        Letter = <<"b"/utf8>>,
+        Letter;
 
-        _ ->
-            <<"wibble"/utf8>>
-    end.
+    _ ->
+        <<"wibble"/utf8>>
+end.

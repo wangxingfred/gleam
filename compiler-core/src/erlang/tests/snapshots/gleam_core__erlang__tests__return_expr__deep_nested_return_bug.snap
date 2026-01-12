@@ -1,0 +1,31 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main() {\n  let x = foo({\n    $return 1\n    2\n  })\n  x\n}\nfn foo(a) { a }\n"
+---
+----- SOURCE CODE
+
+pub fn main() {
+  let x = foo({
+    $return 1
+    2
+  })
+  x
+}
+fn foo(a) { a }
+
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/0]).
+
+-file("project/test/my/mod.gleam", 9).
+-spec foo(J) -> J.
+foo(A) ->
+    A.
+
+-file("project/test/my/mod.gleam", 2).
+-spec main() -> integer().
+main() ->
+    1.

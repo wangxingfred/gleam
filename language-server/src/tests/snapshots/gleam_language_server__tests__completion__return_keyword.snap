@@ -1,0 +1,10 @@
+---
+source: language-server/src/tests/completion.rs
+expression: "\npub fn main() {\n  $ret\n}\n"
+---
+pub fn main() {
+  $ret|
+}
+
+
+----- Completion content -----

@@ -17,4 +17,4 @@ pub fn apply(f: fn(a) -> b, a: a) { a |> f }
 -spec apply(fun((I) -> J), I) -> J.
 apply(F, A) ->
     _pipe = A,
-    F(_pipe).
+F(_pipe).

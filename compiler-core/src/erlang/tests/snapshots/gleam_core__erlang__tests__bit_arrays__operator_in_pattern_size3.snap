@@ -20,19 +20,19 @@ pub fn main() {
 -spec main() -> bitstring().
 main() ->
     Additional = 10,
-    _assert_subject = <<>>,
-    case _assert_subject of
-        <<Len, Payload:(Len + Additional * 8)>> -> _assert_subject;
-        _assert_fail ->
-            erlang:error(#{gleam_error => let_assert,
-                        message => <<"Pattern match failed, no pattern matched the value."/utf8>>,
-                        file => <<?FILEPATH/utf8>>,
-                        module => <<"my/mod"/utf8>>,
-                        function => <<"main"/utf8>>,
-                        line => 4,
-                        value => _assert_fail,
-                        start => 41,
-                        'end' => 102,
-                        pattern_start => 52,
-                        pattern_end => 95})
-    end.
+_assert_subject = <<>>,
+case _assert_subject of
+    <<Len, Payload:(Len + Additional * 8)>> -> _assert_subject;
+    _assert_fail ->
+        erlang:error(#{gleam_error => let_assert,
+                    message => <<"Pattern match failed, no pattern matched the value."/utf8>>,
+                    file => <<?FILEPATH/utf8>>,
+                    module => <<"my/mod"/utf8>>,
+                    function => <<"main"/utf8>>,
+                    line => 4,
+                    value => _assert_fail,
+                    start => 41,
+                    'end' => 102,
+                    pattern_start => 52,
+                    pattern_end => 95})
+end.

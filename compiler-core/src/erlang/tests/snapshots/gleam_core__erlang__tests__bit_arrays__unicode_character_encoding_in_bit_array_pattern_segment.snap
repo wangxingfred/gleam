@@ -24,11 +24,11 @@ pub fn main() -> Nil {
 -spec main() -> nil.
 main() ->
     Wibble = <<"\x{00A9}wibble"/utf8>>,
-    _ = case Wibble of
-        <<"\x{00A9}"/utf8, Rest/bitstring>> ->
-            Rest;
+_ = case Wibble of
+    <<"\x{00A9}"/utf8, Rest/bitstring>> ->
+        Rest;
 
-        _ ->
-            Wibble
-    end,
-    nil.
+    _ ->
+        Wibble
+end,
+nil.

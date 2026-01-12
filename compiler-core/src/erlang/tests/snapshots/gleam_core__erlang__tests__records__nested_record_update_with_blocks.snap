@@ -32,11 +32,11 @@ pub fn main(a: A) {
 -spec main(a()) -> a().
 main(A) ->
     {a,
-        begin
-            _record = erlang:element(2, A),
-            {b,
-                begin
-                    _record@1 = erlang:element(2, erlang:element(2, A)),
-                    {c, 0}
-                end}
-        end}.
+    begin
+        _record = erlang:element(2, A),
+        {b,
+            begin
+                _record@1 = erlang:element(2, erlang:element(2, A)),
+                {c, 0}
+            end}
+    end}.

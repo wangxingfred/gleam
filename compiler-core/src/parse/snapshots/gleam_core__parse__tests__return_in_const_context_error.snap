@@ -1,0 +1,13 @@
+---
+source: compiler-core/src/parse/tests.rs
+expression: const x = $return 42
+---
+----- SOURCE CODE
+const x = $return 42
+
+----- ERROR
+error: Syntax error
+  ┌─ /src/parse/error.gleam:1:9
+  │
+1 │ const x = $return 42
+  │         ^ I was expecting to see a value after this equals sign

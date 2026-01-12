@@ -49,10 +49,10 @@ wibble(A, B, C, D) ->
 -spec main() -> nil.
 main() ->
     wibble(a, b, c, d),
-    wibble(a, b, c, d),
-    wibble(a, b, c, d),
-    wibble(a, b, c, d),
-    wibble(a, b, c, d),
-    wibble(a, b, c, d),
-    wibble(a, b, c, d),
-    wibble(a, b, c, d).
+wibble(a, b, c, d),
+wibble(a, b, c, d),
+wibble(a, b, c, d),
+wibble(a, b, c, d),
+wibble(a, b, c, d),
+wibble(a, b, c, d),
+wibble(a, b, c, d).

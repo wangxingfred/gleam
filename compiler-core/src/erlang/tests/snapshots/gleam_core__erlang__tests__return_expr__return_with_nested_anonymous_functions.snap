@@ -1,0 +1,39 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main() -> Int {\n  let outer = fn(x) {\n    let inner = fn(y) {\n      case y > 0 {\n        True -> $return y * 2  // Returns from inner function, not main\n        False -> 0\n      }\n    }\n    inner(x) + 1\n  }\n  outer(5)\n}"
+---
+----- SOURCE CODE
+
+pub fn main() -> Int {
+  let outer = fn(x) {
+    let inner = fn(y) {
+      case y > 0 {
+        True -> $return y * 2  // Returns from inner function, not main
+        False -> 0
+      }
+    }
+    inner(x) + 1
+  }
+  outer(5)
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/0]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main() -> integer().
+main() ->
+    Outer = fun(X) ->
+    Inner = fun(Y) -> case Y > 0 of
+            true ->
+                Y * 2;
+
+            false ->
+                0
+        end end,
+    Inner(X) + 1
+end,
+Outer(5).

@@ -26,9 +26,9 @@ pub fn main(args) {
 -spec main(any()) -> integer().
 main(Args) ->
     case Args of
-        _ ->
-            A = 1,
-            A
-    end,
-    A@1 = 2,
-    A@1.
+    _ ->
+        A = 1,
+        A
+end,
+A@1 = 2,
+A@1.

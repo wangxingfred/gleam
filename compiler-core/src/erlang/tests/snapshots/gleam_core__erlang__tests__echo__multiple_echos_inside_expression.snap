@@ -20,6 +20,6 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     echo(1, nil, 3),
-    echo(2, nil, 4).
+echo(2, nil, 4).
 
 % ...omitted code from `templates/echo.erl`...

@@ -27,24 +27,24 @@ fn do_side_effects() {
 -spec do_side_effects() -> fun((integer()) -> integer()).
 do_side_effects() ->
     Function = fun(X) -> X + 1 end,
-    erlang:error(#{gleam_error => panic,
-            message => <<"Side effects"/utf8>>,
-            file => <<?FILEPATH/utf8>>,
-            module => <<"my/mod"/utf8>>,
-            function => <<"do_side_effects"/utf8>>,
-            line => 10}),
-    Function.
+erlang:error(#{gleam_error => panic,
+        message => <<"Side effects"/utf8>>,
+        file => <<?FILEPATH/utf8>>,
+        module => <<"my/mod"/utf8>>,
+        function => <<"do_side_effects"/utf8>>,
+        line => 10}),
+Function.
 
 -file("project/test/my/mod.gleam", 4).
 -spec main() -> {ok, integer()} | {error, any()}.
 main() ->
     begin
-        F = do_side_effects(),
-        case {ok, 10} of
-            {ok, Value} ->
-                {ok, F(Value)};
+    F = do_side_effects(),
+    case {ok, 10} of
+        {ok, Value} ->
+            {ok, F(Value)};
 
-            {error, Error} ->
-                {error, Error}
-        end
-    end.
+        {error, Error} ->
+            {error, Error}
+    end
+end.

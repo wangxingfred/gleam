@@ -357,6 +357,11 @@ pub trait UntypedExprFolder: TypeAstFolder + UntypedConstantFolder + PatternFold
             UntypedExpr::NegateBool { location, value } => self.fold_negate_bool(location, value),
 
             UntypedExpr::NegateInt { location, value } => self.fold_negate_int(location, value),
+
+            UntypedExpr::Return { location, value } => UntypedExpr::Return {
+                location,
+                value: Box::new(self.fold_expr(*value)),
+            },
         }
     }
 
@@ -589,6 +594,11 @@ pub trait UntypedExprFolder: TypeAstFolder + UntypedConstantFolder + PatternFold
                     arguments,
                 }
             }
+
+            UntypedExpr::Return { location, value } => UntypedExpr::Return {
+                location,
+                value: Box::new(self.fold_expr(*value)),
+            },
         }
     }
 

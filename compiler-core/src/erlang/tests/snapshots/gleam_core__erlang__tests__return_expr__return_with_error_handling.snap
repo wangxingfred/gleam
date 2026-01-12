@@ -1,0 +1,39 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(x: Result(Int, String)) -> Result(Int, String) {\n  case x {\n    Ok(value) -> case value > 0 {\n      True -> $return Ok(value * 2)\n      False -> Error(\"negative value\")\n    }\n    Error(msg) -> $return Error(\"wrapped: \" <> msg)\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x: Result(Int, String)) -> Result(Int, String) {
+  case x {
+    Ok(value) -> case value > 0 {
+      True -> $return Ok(value * 2)
+      False -> Error("negative value")
+    }
+    Error(msg) -> $return Error("wrapped: " <> msg)
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main({ok, integer()} | {error, binary()}) -> {ok, integer()} |
+    {error, binary()}.
+main(X) ->
+    case X of
+    {ok, Value} ->
+        case Value > 0 of
+            true ->
+                {ok, Value * 2};
+
+            false ->
+                {error, <<"negative value"/utf8>>}
+        end;
+
+    {error, Msg} ->
+        {error, <<"wrapped: "/utf8, Msg/binary>>}
+end.

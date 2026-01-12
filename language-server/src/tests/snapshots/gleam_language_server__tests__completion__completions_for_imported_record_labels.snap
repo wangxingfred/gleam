@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\nimport dep\n\nfn fun() { // completion inside parens below includes labels\n  let wibble = dep.Wibble()\n}\n"
 ---
 import dep
@@ -10,6 +10,12 @@ fn fun() { // completion inside parens below includes labels
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [4:26-4:26]: "$return"
 Error
   kind:   Constructor
   detail: gleam

@@ -1170,3 +1170,254 @@ use x <- fn(f) { f(1) }
     assert!(use_.find_node(23).is_some());
     assert!(use_.find_node(26).is_some()); // The int
 }
+
+/// Property test for AST node structural integrity
+/// **Feature: gleam-return-syntax, Property 3: AST 节点结构完整性**
+/// **Validates: Requirements 2.3, 3.1**
+#[test]
+fn property_ast_node_structural_integrity() {
+    use rand::Rng;
+    // Test 1: UntypedExpr::Return structural integrity
+    let untyped_return = crate::ast::UntypedExpr::Return {
+        location: SrcSpan { start: 0, end: 10 },
+        value: Box::new(crate::ast::UntypedExpr::Int {
+            location: SrcSpan { start: 7, end: 9 },
+            value: "42".into(),
+            int_value: 42.into(),
+        }),
+    };
+    // Verify location method works
+    assert_eq!(untyped_return.location(), SrcSpan { start: 0, end: 10 });
+
+    // Verify start_byte_index method works
+    assert_eq!(untyped_return.start_byte_index(), 0);
+
+    // Verify bin_op_precedence method works (should return u8::MAX for non-binop)
+    assert_eq!(untyped_return.bin_op_precedence(), u8::MAX);
+
+    // Verify can_have_multiple_per_line method works (should return false)
+    assert!(!untyped_return.can_have_multiple_per_line());
+
+    // Verify is_* methods work correctly
+    assert!(!untyped_return.is_tuple());
+    assert!(!untyped_return.is_call());
+    assert!(!untyped_return.is_binop());
+    assert!(!untyped_return.is_pipeline());
+    assert!(!untyped_return.is_todo());
+    assert!(!untyped_return.is_panic());
+
+    // Test 2: TypedExpr::Return structural integrity
+    let typed_return = TypedExpr::Return {
+        location: SrcSpan { start: 0, end: 10 },
+        type_: type_::int(),
+        value: Box::new(TypedExpr::Int {
+            location: SrcSpan { start: 7, end: 9 },
+            type_: type_::int(),
+            value: "42".into(),
+            int_value: 42.into(),
+        }),
+    };
+
+    // Verify location method works
+    assert_eq!(typed_return.location(), SrcSpan { start: 0, end: 10 });
+
+    // Verify type_defining_location method works
+    assert_eq!(typed_return.type_defining_location(), SrcSpan { start: 0, end: 10 });
+
+    // Verify type_ method works
+    assert_eq!(typed_return.type_(), type_::int());
+
+    // Verify is_literal method works (should return false)
+    assert!(!typed_return.is_literal());
+
+    // Verify is_known_bool method works (should return false)
+    assert!(!typed_return.is_known_bool());
+
+    // Verify is_literal_string method works (should return false)
+    assert!(!typed_return.is_literal_string());
+
+    // Verify is_var method works (should return false)
+    assert!(!typed_return.is_var());
+
+    // Verify is_case method works (should return false)
+    assert!(!typed_return.is_case());
+
+    // Verify is_pipeline method works (should return false)
+    assert!(!typed_return.is_pipeline());
+
+    // Verify is_pure_value_constructor method works (should return false)
+    assert!(!typed_return.is_pure_value_constructor());
+
+    // Verify is_record_literal method works (should return false)
+    assert!(!typed_return.is_record_literal());
+
+    // Verify is_record_constructor_function method works (should return false)
+    assert!(!typed_return.is_record_constructor_function());
+
+    // Verify is_panic method works (should return false)
+    assert!(!typed_return.is_panic());
+
+    // Verify is_invalid method works (should return false)
+    assert!(!typed_return.is_invalid());
+
+    // Test 3: Property-based testing with random values
+    let mut rng = rand::rng();
+
+    for _ in 0..100 {
+        let start = rng.random_range(0..1000);
+        let end = start + rng.random_range(10..100);
+        let value_start = start + rng.random_range(1..5);
+        let value_end_offset = rng.random_range(1..5);
+        let value_end = if end > value_end_offset { end - value_end_offset } else { end };
+
+        // Ensure value_end > value_start
+        let value_end = value_end.max(value_start + 1);
+
+        let location = SrcSpan { start, end };
+        let value_location = SrcSpan { start: value_start, end: value_end };
+
+        let untyped_return = crate::ast::UntypedExpr::Return {
+            location,
+            value: Box::new(crate::ast::UntypedExpr::Int {
+                location: value_location,
+                value: "42".into(),
+                int_value: 42.into(),
+            }),
+        };
+
+        // Verify location consistency
+        assert_eq!(untyped_return.location(), location);
+        assert_eq!(untyped_return.start_byte_index(), start);
+
+        let typed_return = TypedExpr::Return {
+            location,
+            type_: type_::int(),
+            value: Box::new(TypedExpr::Int {
+                location: value_location,
+                type_: type_::int(),
+                value: "42".into(),
+                int_value: 42.into(),
+            }),
+        };
+
+        // Verify location and type consistency
+        assert_eq!(typed_return.location(), location);
+        assert_eq!(typed_return.type_defining_location(), location);
+        assert_eq!(typed_return.type_(), type_::int());
+    }
+
+    // Test 4: Nested return expressions (should not occur in practice but test structure)
+    let nested_untyped = crate::ast::UntypedExpr::Return {
+        location: SrcSpan { start: 0, end: 20 },
+        value: Box::new(crate::ast::UntypedExpr::Return {
+            location: SrcSpan { start: 7, end: 17 },
+            value: Box::new(crate::ast::UntypedExpr::Int {
+                location: SrcSpan { start: 14, end: 16 },
+                value: "42".into(),
+                int_value: 42.into(),
+            }),
+        }),
+    };
+
+    // Verify nested structure maintains integrity
+    assert_eq!(nested_untyped.location(), SrcSpan { start: 0, end: 20 });
+    assert!(!nested_untyped.can_have_multiple_per_line());
+
+    // Test 5: Return with different value types
+    let value_types = vec![
+        crate::ast::UntypedExpr::String {
+            location: SrcSpan { start: 7, end: 14 },
+            value: "hello".into(),
+        },
+        crate::ast::UntypedExpr::Var {
+            location: SrcSpan { start: 7, end: 12 },
+            name: "value".into(),
+        },
+        crate::ast::UntypedExpr::List {
+            location: SrcSpan { start: 7, end: 9 },
+            elements: vec![],
+            tail: None,
+        },
+        crate::ast::UntypedExpr::Tuple {
+            location: SrcSpan { start: 7, end: 13 },
+            elements: vec![],
+        },
+    ];
+
+    for (i, value) in value_types.into_iter().enumerate() {
+        let return_expr = crate::ast::UntypedExpr::Return {
+            location: SrcSpan { start: 0, end: 15 },
+            value: Box::new(value),
+        };
+
+        // Verify each return expression maintains structural integrity
+        assert_eq!(return_expr.location(), SrcSpan { start: 0, end: 15 });
+        assert_eq!(return_expr.start_byte_index(), 0);
+        assert!(!return_expr.can_have_multiple_per_line());
+        assert_eq!(return_expr.bin_op_precedence(), u8::MAX);
+
+        // Verify type predicates are consistent
+        assert!(!return_expr.is_tuple(), "Return expression {} incorrectly identified as tuple", i);
+        assert!(!return_expr.is_call(), "Return expression {} incorrectly identified as call", i);
+        assert!(!return_expr.is_binop(), "Return expression {} incorrectly identified as binop", i);
+        assert!(!return_expr.is_pipeline(), "Return expression {} incorrectly identified as pipeline", i);
+        assert!(!return_expr.is_todo(), "Return expression {} incorrectly identified as todo", i);
+        assert!(!return_expr.is_panic(), "Return expression {} incorrectly identified as panic", i);
+    }
+
+    // Test 6: Syntactic equality for TypedExpr::Return
+    let return1 = TypedExpr::Return {
+        location: SrcSpan { start: 0, end: 10 },
+        type_: type_::int(),
+        value: Box::new(TypedExpr::Int {
+            location: SrcSpan { start: 7, end: 9 },
+            type_: type_::int(),
+            value: "42".into(),
+            int_value: 42.into(),
+        }),
+    };
+
+    let return2 = TypedExpr::Return {
+        location: SrcSpan { start: 100, end: 110 }, // Different location
+        type_: type_::int(),
+        value: Box::new(TypedExpr::Int {
+            location: SrcSpan { start: 107, end: 109 }, // Different location
+            type_: type_::int(),
+            value: "42".into(),
+            int_value: 42.into(),
+        }),
+    };
+
+    let return3 = TypedExpr::Return {
+        location: SrcSpan { start: 0, end: 10 },
+        type_: type_::int(),
+        value: Box::new(TypedExpr::Int {
+            location: SrcSpan { start: 7, end: 9 },
+            type_: type_::int(),
+            value: "24".into(), // Different value
+            int_value: 24.into(),
+        }),
+    };
+
+    // Verify syntactic equality works correctly (ignores location, considers value)
+    assert!(return1.syntactically_eq(&return2), "Return expressions with same value should be syntactically equal");
+    assert!(!return1.syntactically_eq(&return3), "Return expressions with different values should not be syntactically equal");
+
+    // Test 7: Find node functionality for return expressions
+    let statement = compile_expression("$return 42");
+    let expr = get_bare_expression(&statement);
+
+    // Verify find_node works for return expressions
+    match expr {
+        TypedExpr::Return { value: _, .. } => {
+            // Should find the return expression itself
+            assert!(expr.find_node(0).is_some(), "Should find return expression at start");
+            assert!(expr.find_node(6).is_some(), "Should find return expression at '$return' keyword");
+
+            // Should find the value expression
+            assert!(expr.find_node(8).is_some(), "Should find value expression");
+            assert!(expr.find_node(9).is_some(), "Should find value expression");
+        },
+        _ => panic!("Expected return expression, got: {:?}", expr),
+    }
+}

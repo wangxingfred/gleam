@@ -318,6 +318,10 @@ impl<'a> CallGraphBuilder<'a> {
                     self.names = names;
                 }
             }
+
+            UntypedExpr::Return { value, .. } => {
+                self.expression(value);
+            }
         }
     }
 

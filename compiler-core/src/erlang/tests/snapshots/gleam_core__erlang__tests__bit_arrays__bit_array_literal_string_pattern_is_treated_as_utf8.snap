@@ -21,9 +21,9 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     case <<>> of
-        <<"a"/utf8, "b"/utf8, _/bitstring>> ->
-            1;
+    <<"a"/utf8, "b"/utf8, _/bitstring>> ->
+        1;
 
-        _ ->
-            2
-    end.
+    _ ->
+        2
+end.

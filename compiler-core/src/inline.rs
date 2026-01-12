@@ -716,6 +716,12 @@ impl Inliner<'_> {
                 constructor: self.boxed_expression(constructor),
                 arguments: self.arguments(arguments),
             },
+
+            TypedExpr::Return { location, type_, value } => TypedExpr::Return {
+                location,
+                type_,
+                value: Box::new(self.expression(*value)),
+            },
         }
     }
 
@@ -925,6 +931,8 @@ impl Inliner<'_> {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => function,
+
+            TypedExpr::Return { .. } => function,
         };
 
         TypedExpr::Call {
@@ -1428,6 +1436,8 @@ fn expand_block(expression: TypedExpr) -> TypedExpr {
         | TypedExpr::NegateBool { .. }
         | TypedExpr::NegateInt { .. }
         | TypedExpr::Invalid { .. } => expression,
+
+        TypedExpr::Return { .. } => expression,
     }
 }
 
@@ -1663,6 +1673,8 @@ impl FunctionToInlinable {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => None,
+
+            TypedExpr::Return { .. } => None,
         }
     }
 

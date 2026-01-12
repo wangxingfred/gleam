@@ -28,24 +28,24 @@ pub fn go(x) {
 -spec go(boolean()) -> nil.
 go(X) ->
     case 'and'(true, X) of
-        true -> nil;
-        false -> erlang:error(#{gleam_error => assert,
-                message => <<"Assertion failed."/utf8>>,
-                file => <<?FILEPATH/utf8>>,
-                module => <<"my/mod"/utf8>>,
-                function => <<"go"/utf8>>,
-                line => 7,
-                kind => function_call,
-                arguments => [#{kind => literal,
-                        value => true,
-                        start => 56,
-                        'end' => 60
-                        }, #{kind => expression,
-                        value => X,
-                        start => 62,
-                        'end' => 63
-                        }],
-                start => 45,
-                'end' => 64,
-                expression_start => 52})
-    end.
+    true -> nil;
+    false -> erlang:error(#{gleam_error => assert,
+            message => <<"Assertion failed."/utf8>>,
+            file => <<?FILEPATH/utf8>>,
+            module => <<"my/mod"/utf8>>,
+            function => <<"go"/utf8>>,
+            line => 7,
+            kind => function_call,
+            arguments => [#{kind => literal,
+                    value => true,
+                    start => 56,
+                    'end' => 60
+                    }, #{kind => expression,
+                    value => X,
+                    start => 62,
+                    'end' => 63
+                    }],
+            start => 45,
+            'end' => 64,
+            expression_start => 52})
+end.

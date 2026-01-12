@@ -112,6 +112,11 @@ pub enum UntypedExpr {
         message: Option<Box<Self>>,
     },
 
+    Return {
+        location: SrcSpan,
+        value: Box<Self>,
+    },
+
     Echo {
         location: SrcSpan,
         /// This is the position where the echo keyword ends:
@@ -168,6 +173,7 @@ impl UntypedExpr {
             | Self::BinOp { location, .. }
             | Self::Tuple { location, .. }
             | Self::Panic { location, .. }
+            | Self::Return { location, .. }
             | Self::String { location, .. }
             | Self::BitArray { location, .. }
             | Self::NegateInt { location, .. }
@@ -196,6 +202,7 @@ impl UntypedExpr {
             | Self::TupleIndex { .. }
             | Self::Todo { .. }
             | Self::Panic { .. }
+            | Self::Return { .. }
             | Self::Echo { .. }
             | Self::BitArray { .. }
             | Self::RecordUpdate { .. }
@@ -222,6 +229,7 @@ impl UntypedExpr {
             | Self::TupleIndex { .. }
             | Self::Todo { .. }
             | Self::Panic { .. }
+            | Self::Return { .. }
             | Self::Echo { .. }
             | Self::BitArray { .. }
             | Self::RecordUpdate { .. }
@@ -262,6 +270,7 @@ impl UntypedExpr {
             | UntypedExpr::TupleIndex { .. }
             | UntypedExpr::Todo { .. }
             | UntypedExpr::Panic { .. }
+            | UntypedExpr::Return { .. }
             | UntypedExpr::Echo { .. }
             | UntypedExpr::BitArray { .. }
             | UntypedExpr::RecordUpdate { .. } => false,

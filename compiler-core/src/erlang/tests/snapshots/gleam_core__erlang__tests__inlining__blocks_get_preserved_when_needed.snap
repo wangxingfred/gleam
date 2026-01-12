@@ -28,6 +28,6 @@ make_adder(A) ->
 -spec main() -> integer().
 main() ->
     begin
-        _pipe = 4,
-        make_adder(_pipe)
-    end(6).
+    _pipe = 4,
+    make_adder(_pipe)
+end(6).

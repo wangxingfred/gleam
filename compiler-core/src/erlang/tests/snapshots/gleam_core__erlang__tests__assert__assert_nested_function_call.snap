@@ -28,25 +28,25 @@ pub fn main() {
 -spec main() -> nil.
 main() ->
     _assert_subject = 'and'(true, false),
-    case 'and'(_assert_subject, true) of
-        true -> nil;
-        false -> erlang:error(#{gleam_error => assert,
-                message => <<"Assertion failed."/utf8>>,
-                file => <<?FILEPATH/utf8>>,
-                module => <<"my/mod"/utf8>>,
-                function => <<"main"/utf8>>,
-                line => 7,
-                kind => function_call,
-                arguments => [#{kind => expression,
-                        value => _assert_subject,
-                        start => 57,
-                        'end' => 73
-                        }, #{kind => literal,
-                        value => true,
-                        start => 75,
-                        'end' => 79
-                        }],
-                start => 46,
-                'end' => 80,
-                expression_start => 53})
-    end.
+case 'and'(_assert_subject, true) of
+    true -> nil;
+    false -> erlang:error(#{gleam_error => assert,
+            message => <<"Assertion failed."/utf8>>,
+            file => <<?FILEPATH/utf8>>,
+            module => <<"my/mod"/utf8>>,
+            function => <<"main"/utf8>>,
+            line => 7,
+            kind => function_call,
+            arguments => [#{kind => expression,
+                    value => _assert_subject,
+                    start => 57,
+                    'end' => 73
+                    }, #{kind => literal,
+                    value => true,
+                    start => 75,
+                    'end' => 79
+                    }],
+            start => 46,
+            'end' => 80,
+            expression_start => 53})
+end.

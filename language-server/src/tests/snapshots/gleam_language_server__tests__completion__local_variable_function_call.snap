@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\nfn add_one(wibble: Int) -> Int {\n  wibble + 1\n}\n\npub fn main() {\n  let wobble = 1\n  add_one(wobble)\n}\n"
 ---
 fn add_one(wibble: Int) -> Int {
@@ -13,6 +13,12 @@ pub fn main() {
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [7:10-7:10]: "$return"
 Error
   kind:   Constructor
   detail: gleam

@@ -101,6 +101,7 @@ pub enum Token {
     Opaque,
     Panic,
     Pub,
+    Return,
     Test,
     Todo,
     Type,
@@ -179,6 +180,7 @@ impl Token {
             | Self::Opaque
             | Self::Panic
             | Self::Pub
+            | Self::Return
             | Self::Test
             | Self::Todo
             | Self::Type
@@ -198,6 +200,7 @@ impl Token {
             | Token::Let
             | Token::Opaque
             | Token::Pub
+            | Token::Return
             | Token::Todo
             | Token::Type
             | Token::Use
@@ -339,6 +342,7 @@ impl fmt::Display for Token {
             Token::PlusDot => "+.",
             Token::Pub => "pub",
             Token::RArrow => "->",
+            Token::Return => "$return",
             Token::RightBrace => "}",
             Token::RightParen => ")",
             Token::RightSquare => "]",

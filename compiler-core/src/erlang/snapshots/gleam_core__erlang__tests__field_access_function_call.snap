@@ -27,4 +27,4 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     B = {fn_box, fun(X) -> X end},
-    (erlang:element(2, B))(5).
+(erlang:element(2, B))(5).

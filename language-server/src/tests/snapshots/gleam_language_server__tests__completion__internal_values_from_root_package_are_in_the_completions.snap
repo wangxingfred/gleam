@@ -1,11 +1,17 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: import dep
 ---
 |import dep
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [1:0-1:0]: "$return"
 Error
   kind:   Constructor
   detail: gleam

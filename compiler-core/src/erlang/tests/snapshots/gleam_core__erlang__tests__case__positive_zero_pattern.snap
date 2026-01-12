@@ -22,9 +22,9 @@ pub fn main(x) {
 -spec main(float()) -> integer().
 main(X) ->
     case X of
-        +0.0 ->
-            1;
+    +0.0 ->
+        1;
 
-        _ ->
-            2
-    end.
+    _ ->
+        2
+end.

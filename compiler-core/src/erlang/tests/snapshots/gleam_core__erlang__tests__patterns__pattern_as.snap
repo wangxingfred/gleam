@@ -20,9 +20,9 @@ pub fn a(x) {
 -spec a({ok, integer()} | {error, any()}) -> integer().
 a(X) ->
     case X of
-        {ok, 1 = Y} ->
-            1;
+    {ok, 1 = Y} ->
+        1;
 
-        _ ->
-            0
-    end.
+    _ ->
+        0
+end.

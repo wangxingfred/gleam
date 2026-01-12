@@ -27,8 +27,8 @@ x(X) ->
 -spec main() -> integer().
 main() ->
     _pipe = 1,
-    _pipe@1 = x(_pipe),
-    x(_pipe@1),
-    _pipe@2 = 2,
-    _pipe@3 = x(_pipe@2),
-    x(_pipe@3).
+_pipe@1 = x(_pipe),
+x(_pipe@1),
+_pipe@2 = 2,
+_pipe@3 = x(_pipe@2),
+x(_pipe@3).

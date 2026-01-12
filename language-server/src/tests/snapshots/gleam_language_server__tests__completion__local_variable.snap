@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\npub fn main(wibble: Int) {\n  let wobble = 1\n  w\n\n  let wabble = 2\n}\n"
 ---
 pub fn main(wibble: Int) {
@@ -11,6 +11,12 @@ pub fn main(wibble: Int) {
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [3:2-3:2]: "$return"
 Error
   kind:   Constructor
   detail: gleam

@@ -26,6 +26,6 @@ id(X) ->
 -spec main() -> boolean().
 main() ->
     1 =:= begin
-        _pipe = 1,
-        id(_pipe)
-    end.
+    _pipe = 1,
+    id(_pipe)
+end.

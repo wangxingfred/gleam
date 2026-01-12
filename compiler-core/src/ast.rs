@@ -1598,6 +1598,8 @@ impl CallArg<TypedExpr> {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => false,
+
+            TypedExpr::Return { .. } => false,
         }
     }
 }
@@ -1656,6 +1658,8 @@ impl CallArg<UntypedExpr> {
             | UntypedExpr::RecordUpdate { .. }
             | UntypedExpr::NegateBool { .. }
             | UntypedExpr::NegateInt { .. } => false,
+
+            UntypedExpr::Return { .. } => false,
         }
     }
 }
@@ -2068,6 +2072,8 @@ fn pattern_and_expression_are_the_same(pattern: &TypedPattern, expression: &Type
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => false,
+
+            TypedExpr::Return { .. } => false,
         },
 
         // A pattern for a constructor with no arguments:

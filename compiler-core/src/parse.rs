@@ -568,6 +568,26 @@ where
                 }
             }
 
+            Some((start, Token::Return, _)) => {
+                self.advance();
+                // return must be followed by an expression
+                match self.parse_expression()? {
+                    Some(value) => {
+                        let end = value.location().end;
+                        UntypedExpr::Return {
+                            location: SrcSpan { start, end },
+                            value: Box::new(value),
+                        }
+                    }
+                    None => {
+                        return parse_error(
+                            ParseErrorType::ExpectedExpressionAfterReturn,
+                            SrcSpan { start, end: start },
+                        );
+                    }
+                }
+            }
+
             Some((start, Token::Echo, echo_end)) => {
                 self.advance();
                 if context == ExpressionUnitContext::FollowingPipe {
@@ -2068,7 +2088,7 @@ where
     //   a: expr
     //   a:
     fn parse_record_update_arg(&mut self) -> Result<Option<UntypedRecordUpdateArg>, ParseError> {
-        match self.maybe_name() {
+        match self.maybe_name_or_contextual_keyword() {
             Some((start, label, _)) => {
                 let (_, end) = self.expect_one(&Token::Colon)?;
                 let value = self.parse_expression()?;
@@ -2289,6 +2309,34 @@ where
                     end,
                 )
             }
+            // labeled discard with contextual keyword as label
+            (
+                Some((start, Token::Return, tok0_end)),
+                Some((name_start, Token::DiscardName { name }, end)),
+            ) => {
+                if is_anon {
+                    return parse_error(
+                        ParseErrorType::UnexpectedLabel,
+                        SrcSpan {
+                            start,
+                            end: tok0_end,
+                        },
+                    );
+                }
+
+                self.advance();
+                self.advance();
+                (
+                    start,
+                    ArgNames::LabelledDiscard {
+                        name,
+                        name_location: SrcSpan::new(name_start, end),
+                        label: "$return".into(),
+                        label_location: SrcSpan::new(start, tok0_end),
+                    },
+                    end,
+                )
+            }
             // discard
             (Some((start, Token::DiscardName { name }, end)), t1) => {
                 self.tok1 = t1;
@@ -2330,6 +2378,90 @@ where
                     end,
                 )
             }
+            // labeled name with contextual keyword as label
+            (
+                Some((start, Token::Return, tok0_end)),
+                Some((name_start, Token::Name { name }, end)),
+            ) => {
+                if is_anon {
+                    return parse_error(
+                        ParseErrorType::UnexpectedLabel,
+                        SrcSpan {
+                            start,
+                            end: tok0_end,
+                        },
+                    );
+                }
+
+                self.advance();
+                self.advance();
+                (
+                    start,
+                    ArgNames::NamedLabelled {
+                        name,
+                        name_location: SrcSpan::new(name_start, end),
+                        label: "$return".into(),
+                        label_location: SrcSpan::new(start, tok0_end),
+                    },
+                    end,
+                )
+            }
+            // labeled name with contextual keyword as name
+            (
+                Some((start, Token::Name { name: label }, tok0_end)),
+                Some((name_start, Token::Return, end)),
+            ) => {
+                if is_anon {
+                    return parse_error(
+                        ParseErrorType::UnexpectedLabel,
+                        SrcSpan {
+                            start,
+                            end: tok0_end,
+                        },
+                    );
+                }
+
+                self.advance();
+                self.advance();
+                (
+                    start,
+                    ArgNames::NamedLabelled {
+                        name: "$return".into(),
+                        name_location: SrcSpan::new(name_start, end),
+                        label,
+                        label_location: SrcSpan::new(start, tok0_end),
+                    },
+                    end,
+                )
+            }
+            // labeled name with both contextual keywords
+            (
+                Some((start, Token::Return, tok0_end)),
+                Some((name_start, Token::Return, end)),
+            ) => {
+                if is_anon {
+                    return parse_error(
+                        ParseErrorType::UnexpectedLabel,
+                        SrcSpan {
+                            start,
+                            end: tok0_end,
+                        },
+                    );
+                }
+
+                self.advance();
+                self.advance();
+                (
+                    start,
+                    ArgNames::NamedLabelled {
+                        name: "$return".into(),
+                        name_location: SrcSpan::new(name_start, end),
+                        label: "$return".into(),
+                        label_location: SrcSpan::new(start, tok0_end),
+                    },
+                    end,
+                )
+            }
             // name
             (Some((start, Token::Name { name }, end)), t1) => {
                 self.tok1 = t1;
@@ -2338,6 +2470,19 @@ where
                     start,
                     ArgNames::Named {
                         name,
+                        location: SrcSpan { start, end },
+                    },
+                    end,
+                )
+            }
+            // contextual keyword as name
+            (Some((start, Token::Return, end)), t1) => {
+                self.tok1 = t1;
+                self.advance();
+                (
+                    start,
+                    ArgNames::Named {
+                        name: "$return".into(),
                         location: SrcSpan { start, end },
                     },
                     end,
@@ -2389,6 +2534,12 @@ where
                 self.advance();
                 self.advance();
                 Some((start, name, end))
+            }
+            // Allow 'return' as a label in function calls for backward compatibility
+            (Some((start, Token::Return, _)), Some((_, Token::Colon, end))) => {
+                self.advance();
+                self.advance();
+                Some((start, "$return".into(), end))
             }
             (t0, t1) => {
                 self.tok0 = t0;
@@ -3441,6 +3592,12 @@ where
                 self.advance();
                 Some((start, name, end))
             }
+            // Named arg with contextual keyword
+            (Some((start, Token::Return, _)), Some((_, Token::Colon, end))) => {
+                self.advance();
+                self.advance();
+                Some((start, "$return".into(), end))
+            }
 
             // Unnamed arg
             (t0, t1) => {
@@ -3501,6 +3658,12 @@ where
                 self.advance();
                 (start, name, end)
             }
+            // Named arg with contextual keyword - required for record updates
+            (Some((start, Token::Return, _)), Some((_, Token::Colon, end))) => {
+                self.advance();
+                self.advance();
+                (start, "$return".into(), end)
+            }
 
             // Unnamed arg or other - return error since record updates require labels
             (Some((start, Token::Name { name }, end)), t1) => {
@@ -3519,6 +3682,27 @@ where
                     }
                     _ => {
                         self.tok0 = Some((start, Token::Name { name }, end));
+                        return parse_error(ParseErrorType::ExpectedName, SrcSpan { start, end });
+                    }
+                }
+            }
+            // Contextual keyword shorthand
+            (Some((start, Token::Return, end)), t1) => {
+                self.tok0 = Some((start, Token::Return, end));
+                self.tok1 = t1;
+
+                // Check if this is label shorthand (return without colon)
+                // In this case, use "$return" as both label and value
+                match self.parse_const_value()? {
+                    Some(value) if value.location() == SrcSpan { start, end } => {
+                        return Ok(Some(RecordUpdateArg {
+                            label: "$return".into(),
+                            location: SrcSpan { start, end },
+                            value,
+                        }));
+                    }
+                    _ => {
+                        self.tok0 = Some((start, Token::Return, end));
                         return parse_error(ParseErrorType::ExpectedName, SrcSpan { start, end });
                     }
                 }
@@ -3831,6 +4015,11 @@ where
                 self.tok0 = Some((start, token, end));
                 Ok(left)
             }
+
+            Token::Return => {
+                self.tok0 = Some((start, token, end));
+                Ok(left)
+            }
         }
     }
 
@@ -4091,6 +4280,8 @@ functions are declared separately from types.";
                 | Token::Todo
                 | Token::Type
                 | Token::Use => parse_error(ParseErrorType::ExpectedName, SrcSpan { start, end }),
+
+                Token::Return => parse_error(ParseErrorType::ExpectedName, SrcSpan { start, end }),
             },
             None => parse_error(ParseErrorType::UnexpectedEof, SrcSpan { start: 0, end: 0 }),
         }
@@ -4177,6 +4368,8 @@ functions are declared separately from types.";
                 | Token::Todo
                 | Token::Type
                 | Token::Use => parse_error(ParseErrorType::ExpectedUpName, SrcSpan { start, end }),
+
+                Token::Return => parse_error(ParseErrorType::ExpectedUpName, SrcSpan { start, end }),
             },
             None => parse_error(ParseErrorType::UnexpectedEof, SrcSpan { start: 0, end: 0 }),
         }
@@ -4297,6 +4490,25 @@ functions are declared separately from types.";
             Some((s, Token::Name { name }, e)) => {
                 self.advance();
                 Some((s, name, e))
+            }
+            t0 => {
+                self.tok0 = t0;
+                None
+            }
+        }
+    }
+
+    // If next token is a Name or contextual keyword (like '$return'), consume it and return relevant info
+    fn maybe_name_or_contextual_keyword(&mut self) -> Option<(u32, EcoString, u32)> {
+        match self.tok0.take() {
+            Some((s, Token::Name { name }, e)) => {
+                self.advance();
+                Some((s, name, e))
+            }
+            // Allow '$return' as an identifier in parameter contexts for backward compatibility
+            Some((s, Token::Return, e)) => {
+                self.advance();
+                Some((s, "$return".into(), e))
             }
             t0 => {
                 self.tok0 = t0;
@@ -4718,6 +4930,8 @@ fn tok_to_binop(t: &Token) -> Option<BinOp> {
         | Token::Todo
         | Token::Type
         | Token::Use => None,
+
+        Token::Return => None,
     }
 }
 /// Simple-Precedence-Parser, perform reduction for expression
@@ -4969,6 +5183,8 @@ fn clause_guard_reduction(
         | Token::Todo
         | Token::Type
         | Token::Use => panic!("Token could not be converted to Guard Op."),
+
+        Token::Return => panic!("Token could not be converted to Guard Op."),
     }
 }
 

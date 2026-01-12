@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\npub fn main() -> Result(Int, Nil) {\n  let result = Ok(12)\n  let result2 = Error(True)\n  r\n}\n"
 ---
 pub fn main() -> Result(Int, Nil) {
@@ -10,6 +10,12 @@ pub fn main() -> Result(Int, Nil) {
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [4:2-4:2]: "$return"
 Error
   kind:   Constructor
   detail: gleam

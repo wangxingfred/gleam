@@ -19,5 +19,5 @@ pub fn go() {
 -spec go() -> nil.
 go() ->
     _ = 1,
-    _ = 2,
-    nil.
+_ = 2,
+nil.

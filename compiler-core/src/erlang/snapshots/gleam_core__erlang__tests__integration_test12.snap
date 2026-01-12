@@ -19,4 +19,4 @@ pub fn x(y) { let Point(a, b) = y a }
 -spec x(point()) -> integer().
 x(Y) ->
     {point, A, B} = Y,
-    A.
+A.

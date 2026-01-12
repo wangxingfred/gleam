@@ -88,6 +88,15 @@ pub trait Visit<'ast> {
         visit_typed_expr(self, expr);
     }
 
+    fn visit_typed_expr_return(
+        &mut self,
+        location: &'ast SrcSpan,
+        type_: &'ast Arc<Type>,
+        value: &'ast TypedExpr,
+    ) {
+        visit_typed_expr_return(self, location, type_, value);
+    }
+
     fn visit_typed_expr_echo(
         &mut self,
         location: &'ast SrcSpan,
@@ -1271,6 +1280,11 @@ where
             type_,
         } => v.visit_typed_expr_echo(location, type_, expression, message),
         TypedExpr::PositionalAccess { .. } => {}
+        TypedExpr::Return {
+            location,
+            type_,
+            value,
+        } => v.visit_typed_expr_return(location, type_, value),
     }
 }
 
@@ -1513,6 +1527,17 @@ pub fn visit_typed_expr_todo<'a, V>(
     if let Some(message) = message {
         v.visit_typed_expr(message);
     }
+}
+
+pub fn visit_typed_expr_return<'a, V>(
+    v: &mut V,
+    _location: &'a SrcSpan,
+    _type_: &'a Arc<Type>,
+    value: &'a TypedExpr,
+) where
+    V: Visit<'a> + ?Sized,
+{
+    v.visit_typed_expr(value);
 }
 
 pub fn visit_typed_expr_echo<'a, V>(

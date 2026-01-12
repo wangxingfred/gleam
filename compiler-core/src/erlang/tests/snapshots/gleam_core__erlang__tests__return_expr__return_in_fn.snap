@@ -1,0 +1,25 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main() {\n  let f = fn() {\n    $return 1\n    2\n  }\n  f()\n}"
+---
+----- SOURCE CODE
+
+pub fn main() {
+  let f = fn() {
+    $return 1
+    2
+  }
+  f()
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/0]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main() -> integer().
+main() ->
+    F = fun() -> 1 end,
+F().

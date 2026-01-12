@@ -1,0 +1,20 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main() -> String {\n  $return \"hello world\"\n}"
+---
+----- SOURCE CODE
+
+pub fn main() -> String {
+  $return "hello world"
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/0]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main() -> binary().
+main() ->
+    <<"hello world"/utf8>>.

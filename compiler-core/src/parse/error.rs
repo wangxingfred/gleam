@@ -127,6 +127,7 @@ pub enum ParseErrorType {
         name: EcoString,
         arguments: Vec<EcoString>,
     },
+    ExpectedExpressionAfterReturn,
 }
 
 pub(crate) struct ParseErrorDetails {
@@ -507,6 +508,8 @@ utf16_codepoint, utf32_codepoint, signed, unsigned, big, little, native, size, u
                     | Token::Todo
                     | Token::Type
                     | Token::Use => token.to_string(),
+
+                    Token::Return => token.to_string(),
                 };
 
                 let messages = std::iter::once(format!("Found {found}, expected one of: "))
@@ -780,6 +783,13 @@ See: https://tour.gleam.run/data-types/generic-custom-types/"
                     extra_labels: vec![],
                 }
             }
+
+            ParseErrorType::ExpectedExpressionAfterReturn => ParseErrorDetails {
+                text: "".into(),
+                hint: Some("If you want to return nothing, use `$return Nil`.".into()),
+                label_text: "Expected an expression after `$return`".into(),
+                extra_labels: vec![],
+            },
         }
     }
 }

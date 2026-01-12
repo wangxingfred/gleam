@@ -20,9 +20,9 @@ pub fn tail(list) {
 -spec tail(list(integer())) -> integer().
 tail(List) ->
     case List of
-        [X | _] ->
-            X;
+    [X | _] ->
+        X;
 
-        _ ->
-            0
-    end.
+    _ ->
+        0
+end.

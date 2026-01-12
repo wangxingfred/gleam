@@ -22,9 +22,9 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     case <<"test"/utf8>> of
-        X when X =:= <<"test"/utf8>> ->
-            1;
+    X when X =:= <<"test"/utf8>> ->
+        1;
 
-        _ ->
-            0
-    end.
+    _ ->
+        0
+end.

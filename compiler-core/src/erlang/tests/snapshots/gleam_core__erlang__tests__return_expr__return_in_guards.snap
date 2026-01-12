@@ -1,0 +1,33 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(x: Int) -> Int {\n  case x {\n    n if n > 10 -> $return n * 2\n    n if n > 5 -> $return n + 1\n    _ -> 0\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x: Int) -> Int {
+  case x {
+    n if n > 10 -> $return n * 2
+    n if n > 5 -> $return n + 1
+    _ -> 0
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main(integer()) -> integer().
+main(X) ->
+    case X of
+    N when N > 10 ->
+        N * 2;
+
+    N@1 when N@1 > 5 ->
+        N@1 + 1;
+
+    _ ->
+        0
+end.

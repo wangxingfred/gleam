@@ -24,10 +24,10 @@ expression: "\n          import hero\n          pub fn main() {\n            let
 -spec main() -> boolean().
 main() ->
     Names = [<<"Tony Stark"/utf8>>, <<"Bruce Wayne"/utf8>>],
-    case Names of
-        N when N =:= [<<"Tony Stark"/utf8>>, <<"Bruce Wayne"/utf8>>] ->
-            true;
+case Names of
+    N when N =:= [<<"Tony Stark"/utf8>>, <<"Bruce Wayne"/utf8>>] ->
+        true;
 
-        _ ->
-            false
-    end.
+    _ ->
+        false
+end.

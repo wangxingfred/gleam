@@ -1,0 +1,16 @@
+---
+source: language-server/src/tests/hover.rs
+expression: "\nfn main() -> Int {\n  $return 1\n}\n"
+---
+fn main() -> Int {
+  $return 1
+  ↑▔▔▔▔▔▔▔▔
+}
+
+
+----- Hover content -----
+Scalar(
+    String(
+        "```gleam\nInt\n```\n",
+    ),
+)

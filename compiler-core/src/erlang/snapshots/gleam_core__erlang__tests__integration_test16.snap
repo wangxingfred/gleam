@@ -21,4 +21,4 @@ go(Xx, Yy) ->
 -spec x() -> integer().
 x() ->
     go(1, 2),
-    go(4, 3).
+go(4, 3).

@@ -20,4 +20,4 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     A = 3,
-    B = - - A.
+B = - - A.

@@ -22,9 +22,9 @@ pub fn bit_array_discard(x) -> Bool {
 -spec bit_array_discard(bitstring()) -> boolean().
 bit_array_discard(X) ->
     case X of
-        <<_/utf8, Rest/binary>> ->
-            true;
+    <<_/utf8, Rest/binary>> ->
+        true;
 
-        _ ->
-            false
-    end.
+    _ ->
+        false
+end.

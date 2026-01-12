@@ -24,13 +24,13 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     X = {1, 2, 3},
-    case X of
-        _ when X =:= {1, 2, 3} ->
-            1;
+case X of
+    _ when X =:= {1, 2, 3} ->
+        1;
 
-        _ when X =:= {2, 3, 4} ->
-            2;
+    _ when X =:= {2, 3, 4} ->
+        2;
 
-        _ ->
-            0
-    end.
+    _ ->
+        0
+end.

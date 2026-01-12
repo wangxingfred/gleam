@@ -1,0 +1,77 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(x: Int, y: Int, z: Int) -> Int {\n  case x {\n    1 -> case y {\n      1 -> case z {\n        1 -> $return 111\n        2 -> $return 112\n        _ -> 110\n      }\n      2 -> case z {\n        1 -> $return 121\n        _ -> 120\n      }\n      _ -> 100\n    }\n    2 -> case y {\n      1 -> $return 210\n      _ -> 200\n    }\n    _ -> 0\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x: Int, y: Int, z: Int) -> Int {
+  case x {
+    1 -> case y {
+      1 -> case z {
+        1 -> $return 111
+        2 -> $return 112
+        _ -> 110
+      }
+      2 -> case z {
+        1 -> $return 121
+        _ -> 120
+      }
+      _ -> 100
+    }
+    2 -> case y {
+      1 -> $return 210
+      _ -> 200
+    }
+    _ -> 0
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/3]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main(integer(), integer(), integer()) -> integer().
+main(X, Y, Z) ->
+    case X of
+    1 ->
+        case Y of
+            1 ->
+                case Z of
+                    1 ->
+                        111;
+
+                    2 ->
+                        112;
+
+                    _ ->
+                        110
+                end;
+
+            2 ->
+                case Z of
+                    1 ->
+                        121;
+
+                    _ ->
+                        120
+                end;
+
+            _ ->
+                100
+        end;
+
+    2 ->
+        case Y of
+            1 ->
+                210;
+
+            _ ->
+                200
+        end;
+
+    _ ->
+        0
+end.

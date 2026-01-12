@@ -22,9 +22,9 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     case <<>> of
-        <<A:1, B:3, C:(B - 2)>> ->
-            C + B;
+    <<A:1, B:3, C:(B - 2)>> ->
+        C + B;
 
-        _ ->
-            1
-    end.
+    _ ->
+        1
+end.

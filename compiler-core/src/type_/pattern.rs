@@ -383,6 +383,8 @@ impl<'a, 'b> PatternTyper<'a, 'b> {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => None,
+
+            TypedExpr::Return { .. } => None,
         }
     }
 

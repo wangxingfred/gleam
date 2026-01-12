@@ -19,6 +19,6 @@ pub fn x(f) {
 -spec x(fun((integer()) -> L)) -> list(L).
 x(F) ->
     [begin
-            _pipe = 1,
-            F(_pipe)
-        end].
+        _pipe = 1,
+        F(_pipe)
+    end].

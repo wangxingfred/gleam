@@ -152,6 +152,12 @@ pub enum TypedExpr {
         type_: Arc<Type>,
     },
 
+    Return {
+        location: SrcSpan,
+        type_: Arc<Type>,
+        value: Box<Self>,
+    },
+
     Echo {
         location: SrcSpan,
         type_: Arc<Type>,
@@ -281,6 +287,10 @@ impl TypedExpr {
             Self::Panic { message, .. } => message
                 .as_ref()
                 .and_then(|message| message.find_node(byte_index))
+                .or_else(|| self.self_if_contains_location(byte_index)),
+
+            Self::Return { value, .. } => value
+                .find_node(byte_index)
                 .or_else(|| self.self_if_contains_location(byte_index)),
 
             Self::Todo { kind, message, .. } => match kind {
@@ -574,6 +584,7 @@ impl TypedExpr {
                 .as_ref()
                 .and_then(|message| message.find_statement(byte_index)),
 
+            Self::Return { value, .. } => value.find_statement(byte_index),
             Self::BitArray { segments, .. } => segments
                 .iter()
                 .find_map(|arg| arg.value.find_statement(byte_index)),
@@ -622,6 +633,7 @@ impl TypedExpr {
             | Self::TupleIndex { .. }
             | Self::Todo { .. }
             | Self::Panic { .. }
+            | Self::Return { .. }
             | Self::Echo { .. }
             | Self::BitArray { .. }
             | Self::RecordUpdate { .. }
@@ -651,6 +663,7 @@ impl TypedExpr {
             | Self::TupleIndex { .. }
             | Self::Todo { .. }
             | Self::Panic { .. }
+            | Self::Return { .. }
             | Self::Echo { .. }
             | Self::BitArray { .. }
             | Self::RecordUpdate { .. }
@@ -674,6 +687,7 @@ impl TypedExpr {
             | Self::BinOp { location, .. }
             | Self::Tuple { location, .. }
             | Self::Panic { location, .. }
+            | Self::Return { location, .. }
             | Self::Block { location, .. }
             | Self::String { location, .. }
             | Self::NegateBool { location, .. }
@@ -704,6 +718,7 @@ impl TypedExpr {
             | Self::Tuple { location, .. }
             | Self::String { location, .. }
             | Self::Panic { location, .. }
+            | Self::Return { location, .. }
             | Self::NegateBool { location, .. }
             | Self::NegateInt { location, .. }
             | Self::Pipeline { location, .. }
@@ -728,6 +743,7 @@ impl TypedExpr {
             | TypedExpr::Todo { .. }
             | TypedExpr::Echo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::BinOp { .. }
             | TypedExpr::Float { .. }
             | TypedExpr::Tuple { .. }
@@ -775,6 +791,7 @@ impl TypedExpr {
             | Self::Call { type_, .. }
             | Self::Float { type_, .. }
             | Self::Panic { type_, .. }
+            | Self::Return { type_, .. }
             | Self::BinOp { type_, .. }
             | Self::Tuple { type_, .. }
             | Self::String { type_, .. }
@@ -830,6 +847,7 @@ impl TypedExpr {
             | Self::TupleIndex { .. }
             | Self::Todo { .. }
             | Self::Panic { .. }
+            | Self::Return { .. }
             | Self::Echo { .. }
             | Self::RecordUpdate { .. }
             | Self::NegateBool { .. }
@@ -862,6 +880,7 @@ impl TypedExpr {
             | TypedExpr::TupleIndex { .. }
             | TypedExpr::Todo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::Echo { .. }
             | TypedExpr::BitArray { .. }
             | TypedExpr::RecordUpdate { .. }
@@ -903,6 +922,7 @@ impl TypedExpr {
             | TypedExpr::Todo { .. }
             | TypedExpr::Echo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::BitArray { .. }
             | TypedExpr::RecordUpdate { .. }
             | TypedExpr::NegateBool { .. }
@@ -998,11 +1018,12 @@ impl TypedExpr {
                     && clauses.iter().all(|c| c.then.is_pure_value_constructor())
             }
 
-            // `panic`, `todo`, and placeholders are never considered pure value constructors,
+            // `panic`, `todo`, `$return`, and placeholders are never considered pure value constructors,
             // we don't want to raise a warning for an unused value if it's one
             // of those.
             TypedExpr::Todo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::Echo { .. }
             | TypedExpr::Invalid { .. } => false,
         }
@@ -1060,6 +1081,7 @@ impl TypedExpr {
             | TypedExpr::Tuple { .. }
             | TypedExpr::Todo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::BitArray { .. }
             | TypedExpr::RecordUpdate { .. }
             | TypedExpr::NegateBool { .. }
@@ -1097,6 +1119,7 @@ impl TypedExpr {
             | TypedExpr::TupleIndex { .. }
             | TypedExpr::Todo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::Echo { .. }
             | TypedExpr::BitArray { .. }
             | TypedExpr::RecordUpdate { .. }
@@ -1143,6 +1166,7 @@ impl TypedExpr {
             | TypedExpr::TupleIndex { .. }
             | TypedExpr::Todo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::Echo { .. }
             | TypedExpr::BitArray { .. }
             | TypedExpr::RecordUpdate { .. }
@@ -1187,6 +1211,7 @@ impl TypedExpr {
             | TypedExpr::TupleIndex { .. }
             | TypedExpr::Todo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::Echo { .. }
             | TypedExpr::BitArray { .. }
             | TypedExpr::RecordUpdate { .. }
@@ -1228,6 +1253,7 @@ impl TypedExpr {
             | TypedExpr::TupleIndex { .. }
             | TypedExpr::Todo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::Echo { .. }
             | TypedExpr::BitArray { .. }
             | TypedExpr::RecordUpdate { .. }
@@ -1288,6 +1314,7 @@ impl TypedExpr {
             | TypedExpr::TupleIndex { location, .. }
             | TypedExpr::Todo { location, .. }
             | TypedExpr::Panic { location, .. }
+            | TypedExpr::Return { location, .. }
             | TypedExpr::BitArray { location, .. }
             | TypedExpr::RecordUpdate { location, .. }
             | TypedExpr::NegateBool { location, .. }
@@ -1319,6 +1346,7 @@ impl TypedExpr {
             | TypedExpr::TupleIndex { .. }
             | TypedExpr::Todo { .. }
             | TypedExpr::Panic { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::Echo { .. }
             | TypedExpr::BitArray { .. }
             | TypedExpr::RecordUpdate { .. }
@@ -1567,6 +1595,13 @@ impl TypedExpr {
             },
             (TypedExpr::Panic { .. }, _) => false,
 
+            (
+                TypedExpr::Return { value, .. },
+                TypedExpr::Return {
+                    value: other_value, ..
+                },
+            ) => value.syntactically_eq(other_value),
+            (TypedExpr::Return { .. }, _) => false,
             (
                 TypedExpr::Echo {
                     expression,

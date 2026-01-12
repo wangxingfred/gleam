@@ -1,0 +1,62 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(x: Int) -> Int {\n  let step1 = x + 1\n  case step1 < 0 {\n    True -> $return -1\n    False -> 0\n  }\n\n  let step2 = step1 * 2\n  case step2 > 100 {\n    True -> $return 100\n    False -> 0\n  }\n\n  let step3 = step2 + 10\n  case step3 > 50 {\n    True -> $return step3\n    False -> 0\n  }\n\n  step3 * 2\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x: Int) -> Int {
+  let step1 = x + 1
+  case step1 < 0 {
+    True -> $return -1
+    False -> 0
+  }
+
+  let step2 = step1 * 2
+  case step2 > 100 {
+    True -> $return 100
+    False -> 0
+  }
+
+  let step3 = step2 + 10
+  case step3 > 50 {
+    True -> $return step3
+    False -> 0
+  }
+
+  step3 * 2
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main(integer()) -> integer().
+main(X) ->
+    Step1 = X + 1,
+case Step1 < 0 of
+    true ->
+        -1;
+
+    false ->
+        0,
+        Step2 = Step1 * 2,
+        case Step2 > 100 of
+            true ->
+                100;
+
+            false ->
+                0,
+                Step3 = Step2 + 10,
+                case Step3 > 50 of
+                    true ->
+                        Step3;
+
+                    false ->
+                        0,
+                        Step3 * 2
+                end
+        end
+end.

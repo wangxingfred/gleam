@@ -297,6 +297,10 @@ pub(crate) struct ExprTyper<'a, 'b> {
 
     // Accumulated errors and warnings found while typing the expression
     pub(crate) problems: &'a mut Problems,
+
+    // The expected return type of the current function being typed.
+    // This is used for return expression type checking.
+    pub(crate) expected_return_type: Option<Arc<Type>>,
 }
 
 impl<'a, 'b> ExprTyper<'a, 'b> {
@@ -344,6 +348,7 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
             current_function_definition: definition,
             minimum_required_version: Version::new(0, 1, 0),
             problems,
+            expected_return_type: None,
         }
     }
 
@@ -543,6 +548,10 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
             UntypedExpr::NegateInt { location, value } => {
                 Ok(self.infer_negate_int(location, *value))
             }
+
+            UntypedExpr::Return { value, location } => {
+                Ok(self.infer_return(location, *value))
+            }
         }
     }
 
@@ -591,6 +600,36 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
             location,
             type_,
             message,
+        }
+    }
+
+    fn infer_return(&mut self, location: SrcSpan, value: UntypedExpr) -> TypedExpr {
+        // Infer the type of the return value expression
+        let typed_value = self.infer(value);
+        
+        // Get the expected return type for this function
+        let return_type = match &self.expected_return_type {
+            Some(expected_type) => {
+                // Unify the return value type with the expected return type
+                if let Err(error) = unify(expected_type.clone(), typed_value.type_()) {
+                    self.problems.error(convert_unify_error(error, location));
+                }
+                expected_type.clone()
+            }
+            None => {
+                // If no expected return type is set, use the inferred type
+                // This can happen in contexts where return is used outside a function
+                typed_value.type_()
+            }
+        };
+
+        // Mark that this expression always "panics" (exits early) for control flow analysis
+        self.previous_panics = true;
+
+        TypedExpr::Return {
+            location,
+            type_: return_type,
+            value: Box::new(typed_value),
         }
     }
 
@@ -1182,6 +1221,8 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => None,
+
+            TypedExpr::Return { .. } => None,
         };
         if let Some((location, kind)) = todopanic {
             let arguments_location = match (arguments.first(), arguments.last()) {
@@ -1597,6 +1638,8 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
                         | UntypedExpr::RecordUpdate { .. }
                         | UntypedExpr::NegateBool { .. }
                         | UntypedExpr::NegateInt { .. } => (),
+
+                        UntypedExpr::Return { .. } => (),
                     }
                 }
 
@@ -3322,6 +3365,12 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
                     location: typed_constructor.location(),
                 });
             }
+
+            TypedExpr::Return { .. } => {
+                return Err(Error::RecordUpdateInvalidConstructor {
+                    location: typed_constructor.location(),
+                });
+            }
         };
 
         let value_constructor = self
@@ -4720,6 +4769,8 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => return Ok(None),
+
+            TypedExpr::Return { .. } => return Ok(None),
         };
 
         Ok(self
@@ -4785,6 +4836,8 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
             | UntypedExpr::RecordUpdate { .. }
             | UntypedExpr::NegateBool { .. }
             | UntypedExpr::NegateInt { .. } => self.infer(fun),
+
+            UntypedExpr::Return { .. } => self.infer(fun),
         };
 
         let (fun, arguments, type_) =
@@ -5263,6 +5316,9 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
             }
 
             if let Ok(body) = Vec1::try_from_vec(body) {
+                // Set the expected return type for return expression type checking
+                body_typer.expected_return_type = return_type.clone();
+                
                 let mut body = body_typer.infer_statements(body);
 
                 // Check that any return type is accurate.
@@ -5465,6 +5521,8 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => (),
+
+            TypedExpr::Return { .. } => (),
         }
     }
 
@@ -5751,6 +5809,32 @@ fn check_subject_for_redundant_match(
         | TypedExpr::NegateBool { .. }
         | TypedExpr::NegateInt { .. }
         | TypedExpr::Invalid { .. } => match subject.record_constructor_arity() {
+            // We make sure to not emit warnings if the case is being used like an
+            // if expression:
+            // ```gleam
+            // case True {
+            //   _ if condition -> todo
+            //   _ if other_condition -> todo
+            //   _ -> todo
+            // }
+            // ```
+            Some(0) if !case_used_like_if => Some(Warning::CaseMatchOnLiteralValue {
+                location: subject.location(),
+            }),
+            Some(0) => None,
+            Some(_) => Some(Warning::CaseMatchOnLiteralCollection {
+                kind: LiteralCollectionKind::Record,
+                location: subject.location(),
+            }),
+            None if subject.is_literal() && !case_used_like_if => {
+                Some(Warning::CaseMatchOnLiteralValue {
+                    location: subject.location(),
+                })
+            }
+            None => None,
+        },
+
+        TypedExpr::Return { .. } => match subject.record_constructor_arity() {
             // We make sure to not emit warnings if the case is being used like an
             // if expression:
             // ```gleam

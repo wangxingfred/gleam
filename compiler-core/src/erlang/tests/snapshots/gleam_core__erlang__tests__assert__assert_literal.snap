@@ -19,20 +19,20 @@ pub fn main() {
 -spec main() -> nil.
 main() ->
     case false of
-        true -> nil;
-        false -> erlang:error(#{gleam_error => assert,
-                message => <<"Assertion failed."/utf8>>,
-                file => <<?FILEPATH/utf8>>,
-                module => <<"my/mod"/utf8>>,
-                function => <<"main"/utf8>>,
-                line => 3,
-                kind => expression,
-                expression => #{kind => literal,
-                    value => false,
-                    start => 26,
-                    'end' => 31
-                    },
-                start => 19,
-                'end' => 31,
-                expression_start => 26})
-    end.
+    true -> nil;
+    false -> erlang:error(#{gleam_error => assert,
+            message => <<"Assertion failed."/utf8>>,
+            file => <<?FILEPATH/utf8>>,
+            module => <<"my/mod"/utf8>>,
+            function => <<"main"/utf8>>,
+            line => 3,
+            kind => expression,
+            expression => #{kind => literal,
+                value => false,
+                start => 26,
+                'end' => 31
+                },
+            start => 19,
+            'end' => 31,
+            expression_start => 26})
+end.

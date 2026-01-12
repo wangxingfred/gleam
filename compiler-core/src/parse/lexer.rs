@@ -41,6 +41,7 @@ pub fn str_to_keyword(word: &str) -> Option<Token> {
         "opaque" => Some(Token::Opaque),
         "panic" => Some(Token::Panic),
         "pub" => Some(Token::Pub),
+        "$return" => Some(Token::Return),
         "test" => Some(Token::Test),
         "todo" => Some(Token::Todo),
         "type" => Some(Token::Type),
@@ -439,6 +440,27 @@ where
             }
             '#' => {
                 self.eat_single_char(Token::Hash);
+            }
+            '$' => {
+                let tok_start = self.get_pos();
+                let _ = self.next_char();
+                let mut name = String::from("$");
+                while self.is_name_continuation() {
+                    name.push(self.next_char().expect("lexing $keyword"));
+                }
+                let tok_end = self.get_pos();
+
+                if name == "$return" {
+                    self.emit((tok_start, Token::Return, tok_end));
+                } else {
+                    return Err(LexicalError {
+                        error: LexicalErrorType::UnrecognizedToken { tok: '$' },
+                        location: SrcSpan {
+                            start: tok_start,
+                            end: tok_end,
+                        },
+                    });
+                }
             }
             '\n' | ' ' | '\t' | '\x0C' => {
                 let tok_start = self.get_pos();

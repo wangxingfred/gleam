@@ -23,7 +23,7 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     X = begin
-        1,
-        2
-    end,
-    X.
+    1,
+    2
+end,
+X.

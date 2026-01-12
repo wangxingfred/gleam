@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\npub type Box {\n/// Hello\n  Box(Int, Int, Float)\n}\n"
 ---
 |
@@ -10,6 +10,12 @@ pub type Box {
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [1:0-1:0]: "$return"
 Box
   kind:   Constructor
   detail: fn(Int, Int, Float) -> Box

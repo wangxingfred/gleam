@@ -25,7 +25,7 @@ fn trip(x, y, f) {
 -spec trip(J, K, fun(() -> N)) -> {J, K, N}.
 trip(X, Y, F) ->
     Z = F(),
-    {X, Y, Z}.
+{X, Y, Z}.
 
 -file("project/test/my/mod.gleam", 2).
 -spec main() -> {float(), binary(), integer()}.

@@ -1,0 +1,60 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(x, y, z) {\n  case x {\n    True ->\n      case y {\n        True -> $return 1\n        False -> 2\n      }\n    False -> 3\n  }\n  case z {\n    True -> $return 4\n    False -> 5\n  }\n  6\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x, y, z) {
+  case x {
+    True ->
+      case y {
+        True -> $return 1
+        False -> 2
+      }
+    False -> 3
+  }
+  case z {
+    True -> $return 4
+    False -> 5
+  }
+  6
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/3]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main(boolean(), boolean(), boolean()) -> integer().
+main(X, Y, Z) ->
+    case X of
+    true ->
+        case Y of
+            true ->
+                1;
+
+            false ->
+                2,
+                case Z of
+                    true ->
+                        4;
+
+                    false ->
+                        5,
+                        6
+                end
+        end;
+
+    false ->
+        3,
+        case Z of
+            true ->
+                4;
+
+            false ->
+                5,
+                6
+        end
+end.

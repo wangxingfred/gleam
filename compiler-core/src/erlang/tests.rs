@@ -40,6 +40,7 @@ mod todo;
 mod type_params;
 mod use_;
 mod variables;
+mod return_expr;
 
 pub fn compile_test_project(
     src: &str,

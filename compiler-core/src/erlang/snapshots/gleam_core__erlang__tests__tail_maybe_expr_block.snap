@@ -25,10 +25,10 @@ pub fn a() {
 -spec a() -> list(integer()).
 a() ->
     Fake_tap = fun(X) -> X end,
-    B = [99],
-    [1,
-        2 |
-        begin
-            _pipe = B,
-            Fake_tap(_pipe)
-        end].
+B = [99],
+[1,
+    2 |
+    begin
+        _pipe = B,
+        Fake_tap(_pipe)
+    end].

@@ -6,7 +6,7 @@ use super::*;
 
 pub(super) struct PatternPrinter<'a, 'env> {
     pub environment: &'env mut Env<'a>,
-    pub variables: Vec<&'a str>,
+    pub variables: Vec<EcoString>,
     pub guards: Vec<Document<'a>>,
     /// In case we're dealing with string patterns, we might have something like
     /// this: `"a" as letter <> rest`. In this case we want to compile it to
@@ -63,10 +63,10 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
         self.variables = vec![];
     }
 
-    pub(super) fn print(&mut self, pattern: &'a TypedPattern) -> Document<'a> {
+    pub(super) fn print(&mut self, pattern: &TypedPattern) -> Document<'a> {
         match pattern {
             Pattern::Assign { name, pattern, .. } => {
-                self.variables.push(name);
+                self.variables.push(name.clone());
                 self.print(pattern)
                     .append(" = ")
                     .append(self.environment.next_local_var_name(name))
@@ -84,7 +84,7 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
             },
 
             Pattern::Variable { name, .. } => {
-                self.variables.push(name);
+                self.variables.push(name.clone());
                 self.environment.next_local_var_name(name)
             }
 
@@ -123,7 +123,7 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
             } => {
                 let right = match right_side_assignment {
                     AssignName::Variable(right) => {
-                        self.variables.push(right);
+                        self.variables.push(right.clone());
                         self.environment.next_local_var_name(right)
                     }
                     AssignName::Discard(_) => "_".to_doc(),
@@ -141,7 +141,7 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
                     //     Prefix = "wibble",
                     //     ...
                     //
-                    self.variables.push(left_name);
+                    self.variables.push(left_name.clone());
 
                     self.assignments.push(StringPatternAssignment {
                         gleam_name: left_name.clone(),
@@ -164,7 +164,7 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
         }
     }
 
-    fn bit_array_size(&mut self, size: &'a TypedBitArraySize) -> Document<'a> {
+    fn bit_array_size(&mut self, size: &TypedBitArraySize) -> Document<'a> {
         match size {
             BitArraySize::Int { value, .. } => int(value),
             BitArraySize::Block { inner, .. } => self.bit_array_size(inner).surround("(", ")"),
@@ -215,8 +215,8 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
 
     fn bit_array_size_divide(
         &mut self,
-        left: &'a TypedBitArraySize,
-        right: &'a TypedBitArraySize,
+        left: &TypedBitArraySize,
+        right: &TypedBitArraySize,
         operator: &'static str,
     ) -> Document<'a> {
         if right.non_zero_compile_time_number() {
@@ -239,9 +239,9 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
 
     fn bit_array_size_operator(
         &mut self,
-        left: &'a TypedBitArraySize,
+        left: &TypedBitArraySize,
         operator: &'static str,
-        right: &'a TypedBitArraySize,
+        right: &TypedBitArraySize,
     ) -> Document<'a> {
         let left = if let BitArraySize::BinaryOperator { .. } = left {
             self.bit_array_size(left).surround("(", ")")
@@ -258,8 +258,8 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
 
     fn tag_tuple_pattern(
         &mut self,
-        name: &'a str,
-        arguments: &'a [CallArg<TypedPattern>],
+        name: &str,
+        arguments: &[CallArg<TypedPattern>],
     ) -> Document<'a> {
         if arguments.is_empty() {
             atom_string(to_snake_case(name))
@@ -274,8 +274,8 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
 
     fn pattern_list(
         &mut self,
-        elements: &'a [TypedPattern],
-        tail: Option<&'a TypedTailPattern>,
+        elements: &[TypedPattern],
+        tail: Option<&TypedTailPattern>,
     ) -> Document<'a> {
         let elements = join(
             elements.iter().map(|element| self.print(element)),
@@ -287,8 +287,8 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
 
     fn pattern_segment(
         &mut self,
-        value: &'a TypedPattern,
-        options: &'a [BitArrayOption<TypedPattern>],
+        value: &TypedPattern,
+        options: &[BitArrayOption<TypedPattern>],
     ) -> Document<'a> {
         let pattern_is_a_string_literal = matches!(value, Pattern::String { .. });
         let pattern_is_a_discard = matches!(value, Pattern::Discard { .. });
@@ -301,7 +301,7 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
             | Pattern::Float { .. } => this.print(value),
 
             Pattern::Assign { name, pattern, .. } => {
-                this.variables.push(name);
+                this.variables.push(name.clone());
                 let variable_name = this.environment.next_local_var_name(name);
 
                 match pattern.as_ref() {
@@ -354,11 +354,11 @@ impl<'a, 'env> PatternPrinter<'a, 'env> {
             | Pattern::Invalid { .. } => panic!("Pattern segment match not recognised"),
         };
 
-        let size = |value: &'a TypedPattern, this: &mut PatternPrinter<'a, 'env>| {
+        let size = |value: &TypedPattern, this: &mut PatternPrinter<'a, 'env>| {
             Some(":".to_doc().append(this.print(value)))
         };
 
-        let unit = |value: &'a u8| Some(eco_format!("unit:{value}").to_doc());
+        let unit = |value: &u8| Some(eco_format!("unit:{value}").to_doc());
 
         bit_array_segment(
             create_document,

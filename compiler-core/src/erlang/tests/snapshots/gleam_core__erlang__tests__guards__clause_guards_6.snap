@@ -22,9 +22,9 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     case {1, 0} of
-        {X, Y} when X =< Y ->
-            1;
+    {X, Y} when X =< Y ->
+        1;
 
-        {_, _} ->
-            0
-    end.
+    {_, _} ->
+        0
+end.

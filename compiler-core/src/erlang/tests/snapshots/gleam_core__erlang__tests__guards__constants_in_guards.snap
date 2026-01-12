@@ -29,10 +29,10 @@ pub fn main(arg) {
 -spec main({{integer(), float(), binary()}, binary(), float(), integer()}) -> integer().
 main(Arg) ->
     _ = [1, 2, 3],
-    case Arg of
-        {W, X, Y, Z} when (((W =:= {1, 2.0, <<"3"/utf8>>}) andalso (X =:= <<"constant value"/utf8>>)) andalso (Y > 3.14)) andalso (Z =:= 42) ->
-            1;
+case Arg of
+    {W, X, Y, Z} when (((W =:= {1, 2.0, <<"3"/utf8>>}) andalso (X =:= <<"constant value"/utf8>>)) andalso (Y > 3.14)) andalso (Z =:= 42) ->
+        1;
 
-        _ ->
-            0
-    end.
+    _ ->
+        0
+end.

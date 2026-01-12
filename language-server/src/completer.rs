@@ -174,7 +174,7 @@ impl<'a, IO> Completer<'a, IO> {
     fn get_phrase_surrounding_completion(&'a self) -> (Range, Option<String>) {
         let valid_phrase_char = |c: char| {
             // Checks if a character is not a valid name/upname character or a dot.
-            !c.is_ascii_alphanumeric() && c != '.' && c != '_'
+            !c.is_ascii_alphanumeric() && c != '.' && c != '_' && c != '$'
         };
         let (range, word) = self.get_phrase_surrounding_for_completion(&valid_phrase_char);
         (range, word.split_once('.').map(|c| String::from(c.0)))
@@ -594,6 +594,25 @@ impl<'a, IO> Completer<'a, IO> {
                     )
                     .fn_completions(function),
                 );
+
+                // Add $return keyword completion
+                let label = "$return".to_string();
+                let sort_text = Some(sort_text(
+                    CompletionKind::Prelude,
+                    &label,
+                    TypeMatch::Unknown,
+                ));
+                completions.push(CompletionItem {
+                    label: label.clone(),
+                    detail: Some("Keyword".into()),
+                    kind: Some(CompletionItemKind::KEYWORD),
+                    sort_text,
+                    text_edit: Some(CompletionTextEdit::Edit(TextEdit {
+                        range: insert_range,
+                        new_text: label,
+                    })),
+                    ..Default::default()
+                });
             }
 
             for (name, value) in &self.module.ast.type_info.values {
@@ -852,6 +871,7 @@ impl<'a, IO> Completer<'a, IO> {
             | TypedExpr::RecordUpdate { .. }
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
+            | TypedExpr::Return { .. }
             | TypedExpr::Invalid { .. } => None,
         }
     }

@@ -23,10 +23,10 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     X = 0,
-    case X of
-        _ when X =:= 0 ->
-            1;
+case X of
+    _ when X =:= 0 ->
+        1;
 
-        _ ->
-            0
-    end.
+    _ ->
+        0
+end.

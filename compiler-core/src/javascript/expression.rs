@@ -390,6 +390,11 @@ impl<'module, 'a> Generator<'module, 'a> {
             TypedExpr::Invalid { .. } => {
                 panic!("invalid expressions should not reach code generation")
             }
+
+            TypedExpr::Return { value, .. } => {
+                let value_doc = self.not_in_tail_position(None, |this| this.wrap_expression(value));
+                docvec!["return ", value_doc, ";"]
+            }
         };
         if expression.handles_own_return() {
             document
@@ -627,6 +632,8 @@ impl<'module, 'a> Generator<'module, 'a> {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => return self.wrap_expression(expression),
+
+            TypedExpr::Return { .. } => return self.wrap_expression(expression),
         }
 
         let document = self.expression(expression);
@@ -1080,6 +1087,21 @@ impl<'module, 'a> Generator<'module, 'a> {
                     ),
                 ],
             ),
+
+            TypedExpr::Return { .. } => (
+                self.wrap_expression(subject),
+                vec![
+                    ("kind", string("expression")),
+                    (
+                        "expression",
+                        self.asserted_expression(
+                            AssertExpression::from_expression(subject),
+                            Some("false".to_doc()),
+                            subject.location(),
+                        ),
+                    ),
+                ],
+            ),
         };
 
         fields.push(("start", location.start.to_doc()));
@@ -1437,6 +1459,20 @@ impl<'module, 'a> Generator<'module, 'a> {
                 let arguments = call_arguments(arguments);
                 self.wrap_return(docvec![fun, arguments])
             }
+
+            TypedExpr::Return { .. } => {
+                let fun = self.not_in_tail_position(None, |this| -> Document<'_> {
+                    let is_fn_literal = matches!(fun, TypedExpr::Fn { .. });
+                    let fun = this.wrap_expression(fun);
+                    if is_fn_literal {
+                        docvec!["(", fun, ")"]
+                    } else {
+                        fun
+                    }
+                });
+                let arguments = call_arguments(arguments);
+                self.wrap_return(docvec![fun, arguments])
+            }
         }
     }
 
@@ -1712,6 +1748,8 @@ impl<'module, 'a> Generator<'module, 'a> {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => None,
+
+            TypedExpr::Return { .. } => None,
         }
     }
 
@@ -2709,6 +2747,8 @@ impl TypedExpr {
             | TypedExpr::NegateBool { .. }
             | TypedExpr::NegateInt { .. }
             | TypedExpr::Invalid { .. } => false,
+
+            TypedExpr::Return { .. } => true,
         }
     }
 }
@@ -2775,7 +2815,8 @@ fn requires_semicolon(statement: &TypedStatement) -> bool {
             | TypedExpr::Panic { .. }
             | TypedExpr::Pipeline { .. }
             | TypedExpr::RecordUpdate { .. }
-            | TypedExpr::Invalid { .. },
+            | TypedExpr::Invalid { .. }
+            | TypedExpr::Return { .. },
         ) => false,
 
         Statement::Assignment(_) => false,

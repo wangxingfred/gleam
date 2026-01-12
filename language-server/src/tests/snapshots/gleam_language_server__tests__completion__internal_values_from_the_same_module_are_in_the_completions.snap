@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\n@external(erlang, \"rand\", \"uniform\")\n@internal pub fn random_float() -> Float\n@internal pub fn main() { 0 }\n@internal pub type Wibble { Wobble }\n@internal pub const wibble = 1\n"
 ---
 |
@@ -11,6 +11,12 @@ expression: "\n@external(erlang, \"rand\", \"uniform\")\n@internal pub fn random
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [1:0-1:0]: "$return"
 Error
   kind:   Constructor
   detail: gleam

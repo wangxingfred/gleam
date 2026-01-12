@@ -1,0 +1,29 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(t: #(Int, Int)) -> Int {\n  case t.0 > t.1 {\n    True -> $return t.0\n    False -> t.1\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn main(t: #(Int, Int)) -> Int {
+  case t.0 > t.1 {
+    True -> $return t.0
+    False -> t.1
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main({integer(), integer()}) -> integer().
+main(T) ->
+    case erlang:element(1, T) > erlang:element(2, T) of
+    true ->
+        erlang:element(1, T);
+
+    false ->
+        erlang:element(2, T)
+end.

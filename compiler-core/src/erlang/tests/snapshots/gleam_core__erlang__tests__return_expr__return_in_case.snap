@@ -1,0 +1,29 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(x) {\n  case x {\n    1 -> $return 1\n    _ -> 2\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x) {
+  case x {
+    1 -> $return 1
+    _ -> 2
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main(integer()) -> integer().
+main(X) ->
+    case X of
+    1 ->
+        1;
+
+    _ ->
+        2
+end.

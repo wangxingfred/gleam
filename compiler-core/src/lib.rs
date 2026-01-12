@@ -85,6 +85,7 @@ pub mod paths;
 pub mod pretty;
 pub mod requirement;
 pub mod strings;
+pub mod transform;
 pub mod type_;
 pub mod uid;
 pub mod version;

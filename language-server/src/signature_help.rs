@@ -83,6 +83,7 @@ pub fn for_expression(expr: &TypedExpr) -> Option<SignatureHelp> {
         | TypedExpr::TupleIndex { .. }
         | TypedExpr::Todo { .. }
         | TypedExpr::Panic { .. }
+	| TypedExpr::Return { .. }
         | TypedExpr::Echo { .. }
         | TypedExpr::BitArray { .. }
         | TypedExpr::RecordUpdate { .. }

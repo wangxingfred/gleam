@@ -1,0 +1,38 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn helper(x: Int) -> Int {\n  x * 2\n}\n\npub fn main(x: Int) -> Int {\n  case x > 10 {\n    True -> $return helper(x)\n    False -> x + 1\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn helper(x: Int) -> Int {
+  x * 2
+}
+
+pub fn main(x: Int) -> Int {
+  case x > 10 {
+    True -> $return helper(x)
+    False -> x + 1
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([helper/1, main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec helper(integer()) -> integer().
+helper(X) ->
+    X * 2.
+
+-file("project/test/my/mod.gleam", 6).
+-spec main(integer()) -> integer().
+main(X) ->
+    case X > 10 of
+    true ->
+        helper(X);
+
+    false ->
+        X + 1
+end.

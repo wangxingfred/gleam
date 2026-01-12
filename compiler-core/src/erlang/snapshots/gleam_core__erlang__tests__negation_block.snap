@@ -20,6 +20,6 @@ pub fn negate(x) {
 -spec negate(boolean()) -> boolean().
 negate(X) ->
     not begin
-        123,
-        X
-    end.
+    123,
+    X
+end.

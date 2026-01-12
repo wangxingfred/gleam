@@ -1,0 +1,29 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(s: String) -> String {\n  case s {\n    \"\" -> $return \"empty\"\n    _ -> s <> \" processed\"\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn main(s: String) -> String {
+  case s {
+    "" -> $return "empty"
+    _ -> s <> " processed"
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main(binary()) -> binary().
+main(S) ->
+    case S of
+    <<""/utf8>> ->
+        <<"empty"/utf8>>;
+
+    _ ->
+        <<S/binary, " processed"/utf8>>
+end.

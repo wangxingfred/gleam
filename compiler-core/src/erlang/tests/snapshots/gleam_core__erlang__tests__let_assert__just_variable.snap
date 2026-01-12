@@ -18,4 +18,4 @@ pub fn go() {
 -spec go() -> {ok, integer()} | {error, any()}.
 go() ->
     X = {ok, 1},
-    X.
+X.

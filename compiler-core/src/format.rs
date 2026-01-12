@@ -1135,6 +1135,10 @@ impl<'comments> Formatter<'comments> {
                 location,
                 ..
             } => self.record_update(constructor, record, arguments, location),
+
+            UntypedExpr::Return { value, .. } => {
+                docvec!["$return ", self.expr(value)]
+            }
         };
         commented(document, comments)
     }
@@ -1319,6 +1323,8 @@ impl<'comments> Formatter<'comments> {
             | UntypedExpr::RecordUpdate { .. }
             | UntypedExpr::NegateBool { .. }
             | UntypedExpr::NegateInt { .. } => self.expr(fun),
+
+            UntypedExpr::Return { value, .. } => self.expr(value),
         };
 
         let arity = arguments.len();
@@ -1583,6 +1589,8 @@ impl<'comments> Formatter<'comments> {
             | UntypedExpr::RecordUpdate { .. }
             | UntypedExpr::NegateBool { .. }
             | UntypedExpr::NegateInt { .. } => self.expr(side),
+
+            UntypedExpr::Return { .. } => self.expr(side),
         };
         match side.bin_op_name() {
             // In case the other side is a binary operation as well and it can
@@ -2016,6 +2024,10 @@ impl<'comments> Formatter<'comments> {
             | UntypedExpr::NegateInt { .. } => {
                 break_("", " ").append(self.expr(expr).group()).nest(INDENT)
             }
+
+            UntypedExpr::Return { .. } => {
+                break_("", " ").append(self.expr(expr).group()).nest(INDENT)
+            }
         }
         .next_break_fits(NextBreakFitsMode::Disabled)
         .group()
@@ -2044,6 +2056,8 @@ impl<'comments> Formatter<'comments> {
             | UntypedExpr::RecordUpdate { .. }
             | UntypedExpr::NegateBool { .. }
             | UntypedExpr::NegateInt { .. } => self.case_clause_value(expr),
+
+            UntypedExpr::Return { .. } => self.case_clause_value(expr),
         }
     }
 
@@ -2422,6 +2436,8 @@ impl<'comments> Formatter<'comments> {
             | UntypedExpr::RecordUpdate { .. }
             | UntypedExpr::NegateBool { .. }
             | UntypedExpr::NegateInt { .. } => self.expr(expression).group(),
+
+            UntypedExpr::Return { .. } => self.expr(expression).group(),
         }
     }
 
@@ -2738,6 +2754,8 @@ impl<'comments> Formatter<'comments> {
             | UntypedExpr::BitArray { .. }
             | UntypedExpr::RecordUpdate { .. }
             | UntypedExpr::NegateInt { .. } => docvec!["!", self.expr(expr)],
+
+            UntypedExpr::Return { .. } => docvec!["!", self.expr(expr)],
         }
     }
 
@@ -2766,6 +2784,8 @@ impl<'comments> Formatter<'comments> {
             | UntypedExpr::BitArray { .. }
             | UntypedExpr::RecordUpdate { .. }
             | UntypedExpr::NegateBool { .. } => docvec!["-", self.expr(expr)],
+
+            UntypedExpr::Return { .. } => docvec!["-", self.expr(expr)],
         }
     }
 
@@ -2899,6 +2919,8 @@ impl<'comments> Formatter<'comments> {
             | UntypedExpr::NegateBool { .. }
             | UntypedExpr::NegateInt { .. }
             | UntypedExpr::Block { .. } => self.expr(expr),
+
+            UntypedExpr::Return { .. } => self.expr(expr),
         }
     }
 
@@ -3566,6 +3588,8 @@ fn is_breakable_argument(expr: &UntypedExpr, arity: usize) -> bool {
         | UntypedExpr::RecordUpdate { .. }
         | UntypedExpr::NegateBool { .. }
         | UntypedExpr::NegateInt { .. } => false,
+
+        UntypedExpr::Return { .. } => false,
     }
 }
 

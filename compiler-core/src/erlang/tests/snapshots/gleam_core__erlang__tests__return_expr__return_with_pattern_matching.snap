@@ -1,0 +1,33 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(x: List(Int)) -> Int {\n  case x {\n    [] -> $return 0\n    [first] -> $return first\n    [first, second, ..] -> $return first + second\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x: List(Int)) -> Int {
+  case x {
+    [] -> $return 0
+    [first] -> $return first
+    [first, second, ..] -> $return first + second
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main(list(integer())) -> integer().
+main(X) ->
+    case X of
+    [] ->
+        0;
+
+    [First] ->
+        First;
+
+    [First@1, Second | _] ->
+        First@1 + Second
+end.

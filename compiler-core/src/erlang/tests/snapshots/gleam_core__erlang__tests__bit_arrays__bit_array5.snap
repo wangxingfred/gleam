@@ -20,4 +20,4 @@ pub fn main() {
 -spec main() -> bitstring().
 main() ->
     A = <<10:(lists:max([(8), 0]))>>,
-    A.
+A.

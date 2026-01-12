@@ -20,9 +20,9 @@ pub fn main() {
 -spec main() -> integer().
 main() ->
     case {ok, 1} of
-        {ok, Duplicate_name} ->
-            Duplicate_name;
+    {ok, Duplicate_name} ->
+        Duplicate_name;
 
-        {error, Duplicate_name} ->
-            Duplicate_name
-    end.
+    {error, Duplicate_name} ->
+        Duplicate_name
+end.

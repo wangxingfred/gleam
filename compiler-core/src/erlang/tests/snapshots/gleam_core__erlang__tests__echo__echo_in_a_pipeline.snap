@@ -28,7 +28,7 @@ wibble(N) ->
 -spec main() -> list(integer()).
 main() ->
     _pipe = [1, 2, 3],
-    echo(_pipe, nil, 4),
-    wibble(_pipe).
+echo(_pipe, nil, 4),
+wibble(_pipe).
 
 % ...omitted code from `templates/echo.erl`...

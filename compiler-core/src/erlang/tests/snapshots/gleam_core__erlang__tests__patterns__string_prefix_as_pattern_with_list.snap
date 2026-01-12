@@ -20,11 +20,11 @@ pub fn a(x) {
 -spec a(list(binary())) -> binary().
 a(X) ->
     case X of
-        [<<"a"/utf8, _/binary>>, <<"b"/utf8, _/binary>>] ->
-            A = <<"a"/utf8>>,
-            B = <<"b"/utf8>>,
-            <<A/binary, B/binary>>;
+    [<<"a"/utf8, _/binary>>, <<"b"/utf8, _/binary>>] ->
+        A = <<"a"/utf8>>,
+        B = <<"b"/utf8>>,
+        <<A/binary, B/binary>>;
 
-        _ ->
-            <<""/utf8>>
-    end.
+    _ ->
+        <<""/utf8>>
+end.

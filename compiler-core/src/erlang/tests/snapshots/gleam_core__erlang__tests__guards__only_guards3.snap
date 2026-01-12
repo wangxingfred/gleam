@@ -24,9 +24,9 @@ pub fn main(arg) {
 -spec main(float()) -> integer().
 main(Arg) ->
     case Arg of
-        _ when Arg > 3.14 ->
-            1;
+    _ when Arg > 3.14 ->
+        1;
 
-        _ ->
-            0
-    end.
+    _ ->
+        0
+end.

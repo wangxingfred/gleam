@@ -26,4 +26,4 @@ id(X) ->
 -spec main() -> fun(() -> integer()).
 main() ->
     X = fun 'Elixir.MyApp':run/0,
-    id(fun 'Elixir.MyApp':run/0).
+id(fun 'Elixir.MyApp':run/0).

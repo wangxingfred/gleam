@@ -1,0 +1,45 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(x: Result(Int, String)) -> Int {\n  let assert Ok(value) = x\n  case value > 10 {\n    True -> $return value\n    False -> 0\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x: Result(Int, String)) -> Int {
+  let assert Ok(value) = x
+  case value > 10 {
+    True -> $return value
+    False -> 0
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main({ok, integer()} | {error, binary()}) -> integer().
+main(X) ->
+    Value@1 = case X of
+    {ok, Value} -> Value;
+    _assert_fail ->
+        erlang:error(#{gleam_error => let_assert,
+                    message => <<"Pattern match failed, no pattern matched the value."/utf8>>,
+                    file => <<?FILEPATH/utf8>>,
+                    module => <<"my/mod"/utf8>>,
+                    function => <<"main"/utf8>>,
+                    line => 3,
+                    value => _assert_fail,
+                    start => 48,
+                    'end' => 72,
+                    pattern_start => 59,
+                    pattern_end => 68})
+end,
+case Value@1 > 10 of
+    true ->
+        Value@1;
+
+    false ->
+        0
+end.

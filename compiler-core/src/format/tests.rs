@@ -17,6 +17,7 @@ mod imports;
 mod lists;
 mod pipeline;
 mod record_update;
+mod return_formatting;
 mod tuple;
 mod use_;
 

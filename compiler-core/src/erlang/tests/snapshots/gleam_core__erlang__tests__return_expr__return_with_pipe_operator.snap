@@ -1,0 +1,39 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn double(x: Int) -> Int {\n  x * 2\n}\n\npub fn main(x: Int) -> Int {\n  case x > 0 {\n    True -> $return x |> double\n    False -> 0\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn double(x: Int) -> Int {
+  x * 2
+}
+
+pub fn main(x: Int) -> Int {
+  case x > 0 {
+    True -> $return x |> double
+    False -> 0
+  }
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([double/1, main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec double(integer()) -> integer().
+double(X) ->
+    X * 2.
+
+-file("project/test/my/mod.gleam", 6).
+-spec main(integer()) -> integer().
+main(X) ->
+    case X > 0 of
+    true ->
+        _pipe = X,
+        double(_pipe);
+
+    false ->
+        0
+end.

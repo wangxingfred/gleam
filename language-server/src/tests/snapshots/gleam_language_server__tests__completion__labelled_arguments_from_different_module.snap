@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\nimport wibble\n\npub fn main() {\n  wibble.divide(10, b)\n}\n"
 ---
 import wibble
@@ -10,6 +10,12 @@ pub fn main() {
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [4:20-4:20]: "$return"
 Error
   kind:   Constructor
   detail: gleam

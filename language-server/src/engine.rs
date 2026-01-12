@@ -1609,6 +1609,7 @@ fn get_expr_qualified_name(expression: &TypedExpr) -> Option<(&EcoString, &EcoSt
         | TypedExpr::RecordUpdate { .. }
         | TypedExpr::NegateBool { .. }
         | TypedExpr::NegateInt { .. }
+        | TypedExpr::Return { .. }
         | TypedExpr::Invalid { .. } => None,
     }
 }

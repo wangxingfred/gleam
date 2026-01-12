@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\npub fn main() -> Int {\n  a\n}\n\nfn add(a, b) { a + b }\nfn sub(a, b) { a - b }\nfn addf(a, b) { a +. b }\n"
 ---
 pub fn main() -> Int {
@@ -12,6 +12,12 @@ fn addf(a, b) { a +. b }
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [2:2-2:2]: "$return"
 Error
   kind:   Constructor
   detail: gleam

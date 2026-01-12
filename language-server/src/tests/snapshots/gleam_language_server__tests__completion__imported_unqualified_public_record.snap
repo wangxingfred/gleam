@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\nimport dep.{Box}\n"
 ---
 |
@@ -7,6 +7,12 @@ import dep.{Box}
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [1:0-1:0]: "$return"
 Box
   kind:   Constructor
   detail: fn(Int) -> Box

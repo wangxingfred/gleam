@@ -207,6 +207,11 @@ impl<'a, 'b, 'c> PipeTyper<'a, 'b, 'c> {
                     PipelineAssignmentKind::FunctionCall,
                     self.infer_apply_pipe(call),
                 ),
+
+                UntypedExpr::Return { .. } => (
+                    PipelineAssignmentKind::FunctionCall,
+                    self.infer_apply_pipe(call),
+                ),
             };
 
             if i + 2 == self.size {

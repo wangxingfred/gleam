@@ -21,7 +21,7 @@ pub fn a(name_: String) -> String {
 -spec a(binary()) -> binary().
 a(Name_) ->
     Name__ = Name_,
-    Name = Name__,
-    One_1 = 1,
-    One1 = One_1,
-    Name.
+Name = Name__,
+One_1 = 1,
+One1 = One_1,
+Name.

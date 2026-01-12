@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cargo test compiler-core/src/transform/cps.rs)",
+      "Bash(cargo test -p gleam-core transform::cps)",
+      "Bash(cargo test --lib compiler-core/src/transform/cps.rs)",
+      "Bash(cargo test --test return_expr)",
+      "Bash(cargo test -p gleam-core --lib erlang::tests::return_expr)",
+      "Bash(cargo test --lib erlang::tests::return_expr)",
+      "Bash(cargo test -p gleam-core return_expr)",
+      "Bash(cargo check -p gleam-core)",
+      "Bash(cargo test --package gleam-core --lib erlang::tests::return_expr)",
+      "Bash(cargo :*)",
+      "Bash(cargo test -p compiler-core --lib erlang::tests::return_expr)",
+      "Bash(cargo test --package gleam-compiler-core --lib erlang::tests::return_expr)",
+      "Bash(cargo check)",
+      "Bash(cargo check --package gleam-core)",
+      "Bash(sed :*)",
+      "Bash(cargo check -p compiler-core)",
+      "Bash(python fix_erlang_lifetimes_revert.py)",
+      "Bash(cargo check -p gleam-compiler-core)",
+      "Bash(python3 fix_erlang_lifetimes_advanced.py)",
+      "Bash(python fix_erlang_lifetimes_v2.py)",
+      "Bash(cargo test -p gleam-core erlang::tests::return_expr)",
+      "Bash(cargo test -p gleam-core --lib erlang::tests::return_expr::return_with_anonymous_function_scope)",
+      "Bash(cargo check -p gleam_core)",
+      "Bash(ls compiler-core/src/erlang/tests/snapshots/gleam_core__erlang__tests__return_expr__*.snap.new)",
+      "Bash(cargo test:*)",
+      "Bash(cargo insta review:*)",
+      "Bash(cargo insta accept:*)"
+    ]
+  }
+}

@@ -254,6 +254,18 @@ fn main() {
 }
 
 #[test]
+fn hover_return_expression() {
+    assert_hover!(
+        "
+fn main() -> Int {
+  $return 1
+}
+",
+        find_position_of("$return")
+    );
+}
+
+#[test]
 fn hover_external_unqualified_imported_function_renamed_module() {
     let code = "
 import example_module.{my_fn} as renamed_module

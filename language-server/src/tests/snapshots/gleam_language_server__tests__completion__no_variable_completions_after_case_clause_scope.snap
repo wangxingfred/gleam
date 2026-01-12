@@ -1,5 +1,5 @@
 ---
-source: compiler-core/src/language_server/tests/completion.rs
+source: language-server/src/tests/completion.rs
 expression: "\npub fn main() {\n  case todo {\n    something -> Nil\n    something_else -> s\n  }\n  s\n}\n"
 ---
 pub fn main() {
@@ -12,6 +12,12 @@ pub fn main() {
 
 
 ----- Completion content -----
+$return
+  kind:   Keyword
+  detail: Keyword
+  sort:   4_$return
+  edits:
+    [4:22-4:22]: "$return"
 Error
   kind:   Constructor
   detail: gleam
