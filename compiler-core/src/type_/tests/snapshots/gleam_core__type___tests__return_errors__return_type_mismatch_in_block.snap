@@ -1,0 +1,28 @@
+---
+source: compiler-core/src/type_/tests/return_errors.rs
+expression: "\npub fn main() -> Int {\n  let x = {\n    $return \"not an int\"\n  }\n  1\n}\n"
+---
+----- SOURCE CODE
+
+pub fn main() -> Int {
+  let x = {
+    $return "not an int"
+  }
+  1
+}
+
+
+----- ERROR
+error: Type mismatch
+  ┌─ /src/one/two.gleam:4:5
+  │
+4 │     $return "not an int"
+  │     ^^^^^^^^^^^^^^^^^^^^
+
+Expected type:
+
+    Int
+
+Found type:
+
+    String

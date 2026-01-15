@@ -33,6 +33,7 @@ mod imports;
 mod let_assert;
 mod pipes;
 mod pretty;
+mod return_errors;
 mod target_implementations;
 mod type_alias;
 mod use_;

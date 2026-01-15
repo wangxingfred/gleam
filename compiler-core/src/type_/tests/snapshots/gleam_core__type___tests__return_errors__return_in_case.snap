@@ -1,0 +1,28 @@
+---
+source: compiler-core/src/type_/tests/return_errors.rs
+expression: "\npub fn main() -> Int {\n  case True {\n    True -> $return \"not an int\"\n    False -> 1\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn main() -> Int {
+  case True {
+    True -> $return "not an int"
+    False -> 1
+  }
+}
+
+
+----- ERROR
+error: Type mismatch
+  ┌─ /src/one/two.gleam:4:13
+  │
+4 │     True -> $return "not an int"
+  │             ^^^^^^^^^^^^^^^^^^^^
+
+Expected type:
+
+    Int
+
+Found type:
+
+    String

@@ -606,29 +606,26 @@ impl<'a, 'b> ExprTyper<'a, 'b> {
     fn infer_return(&mut self, location: SrcSpan, value: UntypedExpr) -> TypedExpr {
         // Infer the type of the return value expression
         let typed_value = self.infer(value);
-        
-        // Get the expected return type for this function
-        let return_type = match &self.expected_return_type {
-            Some(expected_type) => {
-                // Unify the return value type with the expected return type
-                if let Err(error) = unify(expected_type.clone(), typed_value.type_()) {
-                    self.problems.error(convert_unify_error(error, location));
-                }
-                expected_type.clone()
+
+        // Validate that the returned value matches the function's return type
+        if let Some(expected_type) = &self.expected_return_type {
+            if let Err(error) = unify(expected_type.clone(), typed_value.type_()) {
+                self.problems.error(convert_unify_error(error, location));
             }
-            None => {
-                // If no expected return type is set, use the inferred type
-                // This can happen in contexts where return is used outside a function
-                typed_value.type_()
-            }
-        };
+        }
 
         // Mark that this expression always "panics" (exits early) for control flow analysis
         self.previous_panics = true;
 
+        // Use an unbound type variable so this can appear in any context
+        // (similar to panic and todo expressions). This allows $return to work
+        // in case branches where a different type is expected, since the branch
+        // never actually produces a value (it exits early).
+        let type_ = self.new_unbound_var();
+
         TypedExpr::Return {
             location,
-            type_: return_type,
+            type_,
             value: Box::new(typed_value),
         }
     }

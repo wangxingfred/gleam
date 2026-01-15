@@ -1,0 +1,29 @@
+---
+source: compiler-core/src/type_/tests/return_errors.rs
+expression: "\npub fn example() -> Int {\n  let x = case True {\n    True -> 1\n    False -> $return \"wrong type\"\n  }\n  x\n}\n"
+---
+----- SOURCE CODE
+
+pub fn example() -> Int {
+  let x = case True {
+    True -> 1
+    False -> $return "wrong type"
+  }
+  x
+}
+
+
+----- ERROR
+error: Type mismatch
+  ┌─ /src/one/two.gleam:5:14
+  │
+5 │     False -> $return "wrong type"
+  │              ^^^^^^^^^^^^^^^^^^^^
+
+Expected type:
+
+    Int
+
+Found type:
+
+    String
