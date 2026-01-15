@@ -1,0 +1,29 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn nested_case_return(x, y) {\n  case x {\n    0 -> case y {\n      1 -> $return 42\n      _ -> y + 1\n    }\n    _ -> x + y\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn nested_case_return(x, y) {
+  case x {
+    0 -> case y {
+      1 -> $return 42
+      _ -> y + 1
+    }
+    _ -> x + y
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+export function nested_case_return(x, y) {
+  if (x === 0) {
+    if (y === 1) {
+      return 42;
+    } else {
+      return y + 1;
+    }
+  } else {
+    return x + y;
+  }
+}

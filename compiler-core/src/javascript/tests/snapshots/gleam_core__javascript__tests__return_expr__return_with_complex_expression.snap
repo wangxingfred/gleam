@@ -1,0 +1,15 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn complex_return(a, b) {\n  $return a + b * 2 - 1\n}\n"
+---
+----- SOURCE CODE
+
+pub fn complex_return(a, b) {
+  $return a + b * 2 - 1
+}
+
+
+----- COMPILED JAVASCRIPT
+export function complex_return(a, b) {
+  return (a + b * 2) - 1;
+}

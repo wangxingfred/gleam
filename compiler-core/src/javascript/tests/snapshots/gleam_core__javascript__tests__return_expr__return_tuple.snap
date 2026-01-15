@@ -1,0 +1,23 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn return_tuple(x, y) {\n  case x > y {\n    True -> $return #(x, y)\n    False -> #(y, x)\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn return_tuple(x, y) {
+  case x > y {
+    True -> $return #(x, y)
+    False -> #(y, x)
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+export function return_tuple(x, y) {
+  let $ = x > y;
+  if ($) {
+    return [x, y];
+  } else {
+    return [y, x];
+  }
+}

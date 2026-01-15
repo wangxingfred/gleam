@@ -1,0 +1,23 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn return_true() {\n  $return True\n}\n\npub fn return_false() {\n  $return False\n}\n"
+---
+----- SOURCE CODE
+
+pub fn return_true() {
+  $return True
+}
+
+pub fn return_false() {
+  $return False
+}
+
+
+----- COMPILED JAVASCRIPT
+export function return_true() {
+  return true;
+}
+
+export function return_false() {
+  return false;
+}

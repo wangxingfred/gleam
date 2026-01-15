@@ -1,0 +1,21 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn go(x) {\n  {\n    let y = x + 1\n    $return y * 2\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn go(x) {
+  {
+    let y = x + 1
+    $return y * 2
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+export function go(x) {
+  {
+    let y = x + 1;
+    return y * 2;
+  }
+}

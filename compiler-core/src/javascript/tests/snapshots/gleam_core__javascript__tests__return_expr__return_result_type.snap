@@ -1,0 +1,25 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn return_result(x) {\n  case x > 0 {\n    True -> $return Ok(x)\n    False -> Error(\"negative\")\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn return_result(x) {
+  case x > 0 {
+    True -> $return Ok(x)
+    False -> Error("negative")
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+import { Ok, Error } from "../gleam.mjs";
+
+export function return_result(x) {
+  let $ = x > 0;
+  if ($) {
+    return new Ok(x);
+  } else {
+    return new Error("negative");
+  }
+}

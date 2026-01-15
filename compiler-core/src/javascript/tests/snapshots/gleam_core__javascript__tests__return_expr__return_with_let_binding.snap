@@ -1,0 +1,25 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn return_with_let(x) {\n  let y = x * 2\n  case y > 10 {\n    True -> $return y\n    False -> y + 1\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn return_with_let(x) {
+  let y = x * 2
+  case y > 10 {
+    True -> $return y
+    False -> y + 1
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+export function return_with_let(x) {
+  let y = x * 2;
+  let $ = y > 10;
+  if ($) {
+    return y;
+  } else {
+    return y + 1;
+  }
+}

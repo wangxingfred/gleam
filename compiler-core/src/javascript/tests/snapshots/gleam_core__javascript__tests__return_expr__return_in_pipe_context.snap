@@ -1,0 +1,30 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn return_in_pipe(x) {\n  x\n  |> fn(n) {\n    case n > 5 {\n      True -> $return n * 2\n      False -> n + 1\n    }\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn return_in_pipe(x) {
+  x
+  |> fn(n) {
+    case n > 5 {
+      True -> $return n * 2
+      False -> n + 1
+    }
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+export function return_in_pipe(x) {
+  let _pipe = x;
+  {
+    let n = _pipe;
+    let $ = n > 5;
+    if ($) {
+      return n * 2;
+    } else {
+      return n + 1;
+    }
+  }
+}

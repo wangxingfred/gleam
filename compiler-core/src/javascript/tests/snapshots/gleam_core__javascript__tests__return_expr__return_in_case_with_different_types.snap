@@ -1,0 +1,21 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn main(x) -> Int {\n  case x {\n    1 -> $return 0\n    _ -> 1\n  }\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x) -> Int {
+  case x {
+    1 -> $return 0
+    _ -> 1
+  }
+}
+
+----- COMPILED JAVASCRIPT
+export function main(x) {
+  if (x === 1) {
+    return 0;
+  } else {
+    return 1;
+  }
+}

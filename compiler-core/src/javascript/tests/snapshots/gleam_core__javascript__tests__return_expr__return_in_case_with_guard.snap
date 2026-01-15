@@ -1,0 +1,23 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn return_with_guard(x) {\n  case x {\n    n if n > 0 -> $return n * 2\n    _ -> 0\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn return_with_guard(x) {
+  case x {
+    n if n > 0 -> $return n * 2
+    _ -> 0
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+export function return_with_guard(x) {
+  let n = x;
+  if (n > 0) {
+    return n * 2;
+  } else {
+    return 0;
+  }
+}

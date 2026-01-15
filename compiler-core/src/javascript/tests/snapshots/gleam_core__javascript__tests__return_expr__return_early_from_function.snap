@@ -1,0 +1,23 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn early_return(x) {\n  case x > 0 {\n    True -> $return x * 2\n    False -> x + 1\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn early_return(x) {
+  case x > 0 {
+    True -> $return x * 2
+    False -> x + 1
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+export function early_return(x) {
+  let $ = x > 0;
+  if ($) {
+    return x * 2;
+  } else {
+    return x + 1;
+  }
+}

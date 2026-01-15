@@ -31,6 +31,7 @@ mod prelude;
 mod records;
 mod recursion;
 mod results;
+mod return_expr;
 mod strings;
 mod todo;
 mod tuples;

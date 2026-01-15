@@ -1,0 +1,15 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn go(x) {\n  $return x + 1\n}\n"
+---
+----- SOURCE CODE
+
+pub fn go(x) {
+  $return x + 1
+}
+
+
+----- COMPILED JAVASCRIPT
+export function go(x) {
+  return x + 1;
+}

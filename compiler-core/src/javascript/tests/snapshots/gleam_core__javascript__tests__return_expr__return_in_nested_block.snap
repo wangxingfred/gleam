@@ -1,0 +1,27 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn nested_block_return(x) {\n  {\n    let y = x + 1\n    {\n      let z = y * 2\n      $return z + 10\n    }\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn nested_block_return(x) {
+  {
+    let y = x + 1
+    {
+      let z = y * 2
+      $return z + 10
+    }
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+export function nested_block_return(x) {
+  {
+    let y = x + 1;
+    {
+      let z = y * 2;
+      return z + 10;
+    }
+  }
+}

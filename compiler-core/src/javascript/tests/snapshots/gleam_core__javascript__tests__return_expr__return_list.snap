@@ -1,0 +1,25 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn return_list(x) {\n  case x > 0 {\n    True -> $return [1, 2, 3]\n    False -> []\n  }\n}\n"
+---
+----- SOURCE CODE
+
+pub fn return_list(x) {
+  case x > 0 {
+    True -> $return [1, 2, 3]
+    False -> []
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+import { toList } from "../gleam.mjs";
+
+export function return_list(x) {
+  let $ = x > 0;
+  if ($) {
+    return toList([1, 2, 3]);
+  } else {
+    return toList([]);
+  }
+}

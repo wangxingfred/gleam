@@ -163,18 +163,34 @@ pub fn go(x) {
 }
 
 #[test]
-fn return_in_case() {
+fn return_in_case_with_different_types() {
+    // This was previously a type error but should now compile
     assert_js!(
         r#"
-pub fn go(x) {
+pub fn main(x) -> Int {
   case x {
-    0 -> $return 42
-    _ -> x + 1
+    1 -> $return 0
+    _ -> 1
   }
-}
-"#,
+}"#
     );
 }
+
+#[test]
+fn return_in_case_branch_mismatch() {
+    // Case expects String, but return exits with Int
+    assert_js!(
+        r#"
+pub fn main(x) -> Int {
+  let s = case x {
+    True -> "hello"
+    False -> $return 0
+  }
+  1
+}"#
+    );
+}
+
 
 #[test]
 fn return_in_block() {

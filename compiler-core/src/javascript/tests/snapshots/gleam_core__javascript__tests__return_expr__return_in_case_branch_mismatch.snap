@@ -1,0 +1,25 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\npub fn main(x) -> Int {\n  let s = case x {\n    True -> \"hello\"\n    False -> $return 0\n  }\n  1\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x) -> Int {
+  let s = case x {
+    True -> "hello"
+    False -> $return 0
+  }
+  1
+}
+
+----- COMPILED JAVASCRIPT
+export function main(x) {
+  let _block;
+  if (x) {
+    _block = "hello";
+  } else {
+    return 0;
+  }
+  let s = _block;
+  return 1;
+}

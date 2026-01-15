@@ -1,0 +1,31 @@
+---
+source: compiler-core/src/erlang/tests/return_expr.rs
+expression: "\npub fn main(x) -> Int {\n  let s = case x {\n    True -> \"hello\"\n    False -> $return 0\n  }\n  1\n}"
+---
+----- SOURCE CODE
+
+pub fn main(x) -> Int {
+  let s = case x {
+    True -> "hello"
+    False -> $return 0
+  }
+  1
+}
+
+----- COMPILED ERLANG
+-module(my@mod).
+-compile([no_auto_import, nowarn_unused_vars, nowarn_unused_function, nowarn_nomatch, inline]).
+-define(FILEPATH, "project/test/my/mod.gleam").
+-export([main/1]).
+
+-file("project/test/my/mod.gleam", 2).
+-spec main(boolean()) -> integer().
+main(X) ->
+    case X of
+        true ->
+            S = <<"hello"/utf8>>,
+            1;
+
+        false ->
+            0
+    end.

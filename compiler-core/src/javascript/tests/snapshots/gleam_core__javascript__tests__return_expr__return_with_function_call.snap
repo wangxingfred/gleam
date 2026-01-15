@@ -1,0 +1,31 @@
+---
+source: compiler-core/src/javascript/tests/return_expr.rs
+expression: "\nfn helper(x) {\n  x * 2\n}\n\npub fn return_with_call(x) {\n  case x > 0 {\n    True -> $return helper(x)\n    False -> 0\n  }\n}\n"
+---
+----- SOURCE CODE
+
+fn helper(x) {
+  x * 2
+}
+
+pub fn return_with_call(x) {
+  case x > 0 {
+    True -> $return helper(x)
+    False -> 0
+  }
+}
+
+
+----- COMPILED JAVASCRIPT
+function helper(x) {
+  return x * 2;
+}
+
+export function return_with_call(x) {
+  let $ = x > 0;
+  if ($) {
+    return helper(x);
+  } else {
+    return 0;
+  }
+}
